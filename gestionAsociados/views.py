@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import *
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+
 
 # Create your views here.
 def holamundo(request):
@@ -21,14 +23,26 @@ class Register(View):
 
     def post(self, request):
         form = registerAspirantForm(request.POST)
-        nombre = form.__getitem__('nombre').value()
-        apellido = form.__getitem__('apellido').value()
-        email = form.__getitem__('email').value()
-        contra = get_random_string(length=8)
-        print(nombre)
-        print(apellido)
-        usuario = User.objects.create_user(nombre,email,contra)
-        usuario.last_name = apellido
-        usuario.save()
-
-        return redirect('/holamundo')
+        if form.is_valid():
+            nombre = form.__getitem__('nombre').value()
+            apellido = form.__getitem__('apellido').value()
+            email = form.__getitem__('email').value()
+            contra = get_random_string(length=8)
+            print(contra)
+            usuario = User.objects.create_user(email,email,contra)
+            usuario.first_name = nombre
+            usuario.last_name = apellido
+            usuario.save()
+            print(contra)
+            mensaje = 'usuario: '+ email+' Contraseña: '+contra
+            print(mensaje)
+            send_mail(
+                'Cooperativa Credenciales de usuario',
+                mensaje,
+                '',
+                [email],
+                fail_silently=False,
+            )
+            return redirect('/holamundo')
+        else:
+            pass
