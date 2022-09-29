@@ -1,0 +1,13 @@
+{% extends "gestionAsociados/base.html" %}
+
+{% block title %} Registro de aspirante {% endblock %}
+
+{% block content %}
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button>Registrar</button>
+        </form>
+    </div>
+{% endblock%}
