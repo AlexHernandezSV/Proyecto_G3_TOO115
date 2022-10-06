@@ -1,0 +1,13 @@
+{% extends "gestionAsociados/base.html" %}
+
+{% block title %} Inicio de sesion {% endblock %}
+
+{% block content %}
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button>Iniciar sesion</button>
+        </form>
+    </div>
+{% endblock%}
