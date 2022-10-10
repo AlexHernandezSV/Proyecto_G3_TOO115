@@ -53,16 +53,17 @@ class Register(View):
             pass
 
 #view para logear
-def login(request):
+def login_user(request):
     if request.method=="POST":
         form=AuthenticationForm(request,data=request.POST)
         if form.is_valid():
-            usuario=form.cleaned_data.get("username")
+            user_name=form.cleaned_data.get("username")
             contra=form.cleaned_data.get("password")
-            usuario=authenticate(username=usuario, password=contra)
+            usuario=authenticate(request,username=user_name, password=contra)
+            print(usuario)
             if usuario is not None:
-                login(request, usuario)
-                return redirect('holamundo')
+                login(request,usuario)
+                return redirect('/holamundo')
             else:
                 message.error(request,"Usuario no registrado en el sistema")
         else:
