@@ -1,0 +1,25 @@
+{% extends "gestionAsociados/base.html" %}
+{% load static %}
+{% block title %} Registro de aspirante {% endblock %}
+    <script src="{% static 'user/js/list.js' %}"></script>
+{% block content %}
+    <h1>Listado de usuarios delsistema</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{usuario.id}}</td>
+                <td>{{usuario.username}}</td>
+                <td>{{usuario.role}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock%}

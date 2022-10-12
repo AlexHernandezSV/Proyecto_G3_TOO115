@@ -3,6 +3,7 @@ from secrets import choice
 from weakref import proxy
 from django.db import models
 from  django.contrib.auth.models import AbstractUser
+from django.forms import model_to_dict
 
 # Create your models here.
 
@@ -22,6 +23,11 @@ class User(AbstractUser):
         if not self.pk:
             self.role = self.base_role
             return super().save(*args, **kwargs)
+
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
 
 class Aspirante(User):
     base_role = User.Role.ASPIRANTE
