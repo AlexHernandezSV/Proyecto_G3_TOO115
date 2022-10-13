@@ -5,7 +5,7 @@ from django.views.generic import View
 from django.utils.crypto import get_random_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-from user.models import Aspirante, JefeOperaciones
+from user.models import Aspirante, Cajero, JefeOperaciones
 from .forms import *
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
@@ -35,6 +35,72 @@ class Register(View):
             contra = get_random_string(length=8)
             print(contra)
             usuario = Aspirante.objects.create_user(email,email,contra)
+            usuario.first_name = nombre
+            usuario.last_name = apellido
+            usuario.save()
+            print(contra)
+            mensaje = 'usuario: '+ email+' Contraseña: '+contra
+            print(mensaje)
+            send_mail(
+                'Cooperativa Credenciales de usuario',
+                mensaje,
+                '',
+                [email],
+                fail_silently=False,
+            )
+            return redirect('/holamundo')
+        else:
+            pass
+
+
+
+#registrar jefe de operaciones
+class RegisterJefeOperaciones(View):
+    def get(self,request):
+        form = registerAspirantForm()
+        return render(request, "gestionAsociados/singUpJO.html",{"form":form})
+
+    def post(self, request):
+        form = registerAspirantForm(request.POST)
+        if form.is_valid():
+            nombre = form.__getitem__('nombre').value()
+            apellido = form.__getitem__('apellido').value()
+            email = form.__getitem__('email').value()
+            contra = get_random_string(length=8)
+            print(contra)
+            usuario = JefeOperaciones.objects.create_user(email,email,contra)
+            usuario.first_name = nombre
+            usuario.last_name = apellido
+            usuario.save()
+            print(contra)
+            mensaje = 'usuario: '+ email+' Contraseña: '+contra
+            print(mensaje)
+            send_mail(
+                'Cooperativa Credenciales de usuario',
+                mensaje,
+                '',
+                [email],
+                fail_silently=False,
+            )
+            return redirect('/holamundo')
+        else:
+            pass
+
+#registrar Cajero
+class RegisterCajero(View):
+    def get(self,request):
+        form = registerAspirantForm()
+        return render(request, "gestionAsociados/singUpCJ.html",{"form":form})
+
+    def post(self, request):
+        form = registerAspirantForm(request.POST)
+        if form.is_valid():
+            nombre = form.__getitem__('nombre').value()
+            apellido = form.__getitem__('apellido').value()
+            email = form.__getitem__('email').value()
+            contra = get_random_string(length=8)
+            print(contra)
+            usuario = Cajero.objects.create_user(email,email,contra)
             usuario.first_name = nombre
             usuario.last_name = apellido
             usuario.save()

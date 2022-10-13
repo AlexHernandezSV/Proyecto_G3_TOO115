@@ -1,16 +1,16 @@
 {% extends "gestionAsociados/base.html" %}
 
-{% block title %} Registro de aspirante {% endblock %}
+{% block title %} Registro de Jefes de Operaciones {% endblock %}
 
 {% block content %}
 <div>
-    <h3>Registro de Aspirantes</h3>
+    <h3>Registro de Jefes de Operaciones</h3>
 </div>
     <div>
         <form method="POST">
             {% csrf_token %}
             {{form}}
-            <button>Registrar</button>
+            <button>Registrar Jefe de Operaciones</button>
         </form>
     </div>
 {% endblock%}
