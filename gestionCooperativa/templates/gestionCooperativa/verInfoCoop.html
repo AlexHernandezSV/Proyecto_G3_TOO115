@@ -1,0 +1,176 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.98.0">
+    <title>Ver Informacion</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sticky-footer-navbar/">
+
+    
+
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="{% static 'inicio/css/sticky-footer-navbar.css' %}" rel="stylesheet">
+  </head>
+  <body class="d-flex flex-column h-100">
+    
+<header>
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Ver informacion de Cooperativa</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="home"">Inicio</a>
+          </li>
+          
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<body>
+  <main>
+    <div class="container py-4">
+    
+      <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">Informacion registrada</h1>
+          <p class="col-md-8 fs-4"></p>
+          <head>
+            <meta charset="UTF-8">
+            <title></title>
+          
+            <link rel="stylesheet" href="{% static 'inicio/css/tabla.css' %}">
+          </head>
+          <body>
+            <div id="main-container">
+           
+              <table class="table table-striped">
+                <tr>
+               
+                <td>Nombre</td>
+                <td>Departamento</td>
+                <td>Municipio</td>
+                <td>Años en Funcinamiento</td>
+                <td>Numero de empleados</td>
+                <td>Numero de registro</td>
+                <td>Descripcion</td>
+                <td>Logo</td>
+                </tr>
+                
+                <tbody>
+                {% for stud in mostrar %}  
+                <tr>
+               
+                <td>{{stud.nombre_text}}</td>
+                <td>{{stud.departamento_text}}</td>
+                <td>{{stud.municipio_text}}</td>
+                <td>{{stud.aniosFuncionando_numero}}</td>
+                <td>{{stud.numeroEmpleados_numero}}</td>
+                <td>{{stud.numeroRegistro_text}}</td>
+                <td>{{stud.descripcion_text}}</td>
+                <td><img src="{{ stud.logo_img }}" width="200" height="200"></td>
+                
+                </tr>
+                {% endfor %} 
+                </tbody>
+                
+                </table>
+            </div>
+          </body>
+          <button class="btn btn-primary btn-lg" type="button" onclick="window.location='editarInfoCoop';">Editar informacion</button>
+      
+          <button class="btn btn-primary btn-lg" type="button" onclick="window.location='home';">Salir</button>
+      
+        </div>
+        <footer >
+          &copy; 2022
+        </footer>
+      </div>
+    </main>
+  
+</body>
+
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Accidentes</title>
+</head>
+<body>
+  
+
+
+

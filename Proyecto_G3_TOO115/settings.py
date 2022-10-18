@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gestionAsociados',
+    'gestionCooperativa',
     'user',
 ]
 
@@ -79,7 +80,7 @@ WSGI_APPLICATION = 'Proyecto_G3_TOO115.wsgi.application'
 DATABASES = {
     'default': {
 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
 
         'NAME': 'gestion_asociados',
 
@@ -148,3 +149,4 @@ EMAIL_HOST_USER = "tecnoinnovag3@gmail.com"
 EMAIL_HOST_PASSWORD= "jcydkpopbzklosbh"
 
 #Contraseña del correo tecnoinnovag3@gmail.com : too.grupo.03
+
