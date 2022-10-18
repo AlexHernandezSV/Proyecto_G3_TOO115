@@ -17,6 +17,10 @@ from django.contrib import messages
 def holamundo(request):
     return render(request,'gestionAsociados/holamundo.html')
 
+#pagina de inicio
+def home(request):
+    return render(request,'gestionAsociados/home.html')
+
 """def crearUsuario(request):
 
     return render(request, 'gestionAsociados/singUp.html')"""
@@ -137,3 +141,4 @@ def login_user(request):
 
     form=AuthenticationForm()
     return render(request, "gestionAsociados/login.html",{"form":form})
+
