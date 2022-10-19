@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def holamundo(request):
@@ -142,3 +143,118 @@ def login_user(request):
     form=AuthenticationForm()
     return render(request, "gestionAsociados/login.html",{"form":form})
 
+@login_required
+def crearPeticionAdmision(request):
+    aspirante = Aspirante.objects.get(username=request.user)
+    if request.method=="POST":
+        formPeticion = peticionAspiranteForm(request.POST)
+        formFamiliar = FamiliaresForm(request.POST)
+        formBeneficiario = BeneficiarioForm(request.POST)
+        formConyuge = ConyegeForm(request.POST)
+        formTrabajo = TrabajoForm(request.POST)
+        formNegocio = NegocioForm(request.POST)
+        formRefPersonal = ReferenciaPersonalForm(request.POST)
+
+        if formPeticion.is_valid() and formFamiliar.is_valid() and formBeneficiario.is_valid() and formConyuge.is_valid() and formTrabajo.is_valid() and formNegocio.is_valid() and formRefPersonal.is_valid():
+            infFormPeticion = formPeticion.cleaned_data
+            infFormFamilar= formFamiliar.cleaned_data
+            infFormBeneficiario = formBeneficiario.cleaned_data
+            infFormConyuge = formConyuge.cleaned_data
+            infFormTrabajo = formTrabajo.cleaned_data
+            infFomrNegocio = formNegocio.cleaned_data
+            infFormRefPersonal = formRefPersonal.cleaned_data
+
+            miPeticion = PeticionAdmision(
+                nombre1 = infFormPeticion["nombre1"], 
+                nombre2 = infFormPeticion["nombre2"],
+                nombre3 = infFormPeticion["nombre3"],
+                apellido1 = infFormPeticion["apellido1"],
+                apellido2 = infFormPeticion["apellido2"],
+                fechaNac =infFormPeticion["fechaNac"],
+                direccion =infFormPeticion["direccion"],
+                email = infFormPeticion["email"],
+                personasDependientes = infFormPeticion["personasDependientes"],                                     
+                #verificada = infFormPeticion["nombre1"],
+                #aprobada = infFormPeticion["nombre1"],
+                #estado = infFormPeticion["nombre1"],
+                aspirante = aspirante,
+                departamento = infFormPeticion["departamento"],
+                municipio = infFormPeticion["municipio"],
+                pais = infFormPeticion["pais"]
+            )
+            miPeticion.save()
+
+            conyuge = Conyuge(
+                nombre = infFormConyuge["nombre"],
+                apellido = infFormConyuge["apellido"],
+                docIdentidad = infFormConyuge["docIdentidad"],
+                telefono= infFormConyuge["telefono"],
+                peticionAdmision = miPeticion,
+            )
+            
+            trabajo = Trabajo(
+                tipo =  infFormTrabajo["tipo"],
+                lugarTrabajo = infFormTrabajo["lugarTrabajo"],
+                direccion =  infFormTrabajo["direccion"],
+                telefono =  infFormTrabajo["telefono"],
+                email =  infFormTrabajo["email"],
+                sueldo =  infFormTrabajo["sueldo"],
+                cargo = infFormTrabajo["cargo"],
+                jefe = infFormTrabajo["jefe"],
+                peticionAdmision = miPeticion  
+            )
+            negocio = Negocio(
+                nombreNegocio = infFomrNegocio["nombreNegocio"],
+                direccion = infFomrNegocio["direccion"],
+                telefono = infFomrNegocio["telefono"],
+                email = infFomrNegocio["email"],
+                numRegistroIva = infFomrNegocio["numRegistroIva"],
+                giro = infFomrNegocio["giro"],
+                numTrabajadores = infFomrNegocio["numTrabajadores"],
+                capital = infFomrNegocio["capital"],
+                mercancia = infFomrNegocio["mercancia"],
+                mobiliarioEquipo = infFomrNegocio["mobiliarioEquipo"],
+                peticionAdmision = miPeticion
+            )
+            refPersonal = ReferenciaPersonal(
+                nombre = infFormRefPersonal["nombre"],
+                apellido = infFormRefPersonal["apellido"],
+                telefono = infFormRefPersonal["telefono"],
+                email = infFormRefPersonal["email"],
+                peticionAdmision = miPeticion
+            )
+            refFamiliar = Familiar(
+                parentesco = infFormFamilar["parentesco"],
+                nombre = infFormFamilar["nombre"],
+                apellido = infFormFamilar["apellido"],
+                telefono = infFormFamilar["telefono"],
+                email = infFormFamilar["email"],
+                municipio= infFormFamilar["municipio"],
+                departamento= infFormFamilar["departamento"],
+                peticionAdmision = miPeticion
+            )
+            beneficiario = Beneficiario(
+                parentesco = infFormBeneficiario["parentesco"],
+                nombre = infFormBeneficiario["nombre"],
+                apellido = infFormBeneficiario["apellido"],
+                beneficio = infFormBeneficiario["beneficio"],
+                peticionAdmision = miPeticion,
+            )
+
+            conyuge.save()
+            trabajo.save()
+            negocio.save()
+            refPersonal.save()
+            refFamiliar.save()
+            beneficiario.save()
+            
+
+    else:
+        formPeticion = peticionAspiranteForm()
+        formFamiliar = FamiliaresForm()
+        formBeneficiario = BeneficiarioForm()
+        formConyuge = ConyegeForm()
+        formTrabajo = TrabajoForm()
+        formNegocio = NegocioForm()
+        formRefPersonal = ReferenciaPersonalForm()
+    return render(request,'gestionAsociados/crearPeticionAdmision.html',{"formPeticion":formPeticion,"formFamiliar":formFamiliar,"formBeneficiario":formBeneficiario,"formConyuge":formConyuge,"formTrabajo":formTrabajo,"formNegocio":formNegocio,"formRefPersonal":formRefPersonal})

@@ -1,6 +1,3 @@
-from random import choices
-from secrets import choice
-from weakref import proxy
 from django.db import models
 from  django.contrib.auth.models import AbstractUser
 from django.forms import model_to_dict
@@ -23,6 +20,7 @@ class User(AbstractUser):
         if not self.pk:
             self.role = self.base_role
             return super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     
     def toJSON(self):
