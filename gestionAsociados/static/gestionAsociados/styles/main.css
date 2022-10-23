@@ -1,3 +1,8 @@
-.form-personalizado{
-    background-color: lightgray;
+.form-personalizado div *{
+    margin: 3px;
+}
+
+.c-small{
+    width: 18rem;
+    background-color: blue;
 }
