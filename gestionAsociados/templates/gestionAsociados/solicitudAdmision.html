@@ -1,0 +1,105 @@
+{% extends "gestionAsociados/base.html" %}
+
+{% block title %} Inicio de sesion {% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Solicitud de Admision</h1>
+
+    <div class="container">
+        
+    <!--Acordeon para el Formulario-->
+    <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <div class="card mt-3 p-4" id="datos-personales">
+                <div class="card-title"><h4>Datos Personales</h4></div>
+                <div class="row g-3">
+                    {% for field in formPeticion%}
+                    <div class="col-md-4">
+                        <label for={{field.name}}>{{field.label}}</label>
+                        {{field}}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center mt-3">
+                <a class="btn btn-success" href="#datos-vivienda">Continuar</a>
+                </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-vivienda">
+                <div class="card-title"><h4>Datos de Vivienda</h4></div>
+                {{formVivienda}}
+            </div>
+            <div class="row mt-3 border rounded" id="row-datos-trabajo">
+                <div class="card-title"><h4>Datos del Trabajo</h4></div>
+                <div class="form-check" id="control-trabajo">
+                    <input type="radio" id="empleo" name="datos-trabajo" value="empleo" required>
+                    <label for="empleo">Empleo</label><br>
+                    <input type="radio" id="negocio" name="datos-trabajo" value="negocio">
+                    <label for="negocio">Negocio Propio</label><br>
+                    <input type="radio" id="negocio-empleo" name="datos-trabajo" value="negocio-empleo">
+                    <label for="negocio-empleo">Ambos</label>
+                </div>
+                <div class="card mt-3 p-4 col" id="datos-trabajo" style="border:none;">
+                    <div class="card-title"><h4>Trabajo</h4></div>
+                    {{formTrabajo}}
+                </div>
+                <div class="card mt-3 m-1 p-4 col" id="datos-negocio" style="border:none;">
+                    <div class="card-title"><h4>Negocio</h4></div>
+                    {{formNegocio}}
+                </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-vivienda">
+                <div class="card-title"><h4>Datos del Conyuge</h4></div>
+                {{formConyuge}}
+            </div>
+            <div class="card mt-3 p-4" id="datos-vivienda">
+                <div class="card-title"><h4>Familiares</h4></div>
+                <div class="row">
+                    <div class="card col " style="border:none;">
+                        <h6>1)</h6>
+                        {{formFamiliar}}
+                    </div>
+                    <div class="card col" style="border:none;">
+                        <h6>2)</h6>
+                        {{formFamiliar2}}
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-vivienda">
+                <div class="card-title"><h4>Referencias Personales</h4></div>
+                <div class="row">
+                    <div class="card col" style="border: none;">
+                        <h6>1)</h6>
+                        {{formRefPersonal}}
+                    </div>
+                    <div class="card col" style="border: none;">
+                        <h6>2)</h6>
+                        {{formRefPersonal2}}
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-vivienda">
+                <div class="card-title"><h4>Beneficiarios</h4></div>
+                <div class="row" id="forms-beneficiarios-container">
+                    {{ formBeneficiario.management_form }}
+                    {% for formBenef in formBeneficiario %}
+                    <div class="col-6 card" style="border:none;" id="form-beneficiario-{{forloop.counter}}">
+                        <h6 id="n-beneficiario">{{forloop.counter}})</h6>
+                        {{formBenef}}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center mt-4">
+                <button type="button" id="add-benef" class="btn btn-secondary">Agregar</button>
+                </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-vivienda">
+                <div class="card-title"><h4>Subir Documentos</h4></div>
+                {{formDocAnexo}}
+                {{formDocAnexo2}}
+                {{formDocAnexo3}}
+            </div>
+            <div class="mt-4">
+                <button class="btn btn-primary">Guardar</button>
+            </div>
+    </form>
+    
+{% endblock%}

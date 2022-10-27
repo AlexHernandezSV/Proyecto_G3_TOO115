@@ -1,8 +1,16 @@
+from string import digits
 from unicodedata import decimal
 from django.db import models
 from user.models import Aspirante
 
 # Create your models here.
+
+tenencia_viviendaChoices = [
+    ('Propia','Propia'),
+    ('Alquilada','Alquilada'),
+    ('Promesa de venta','Promesa de venta'),
+    ('Familiar','Familiar')
+]
 
 class Departamento(models.Model):
     codigo = models.CharField(max_length=8)
@@ -32,7 +40,7 @@ class TipoDocIdentidad(models.Model):
 class PeticionAdmision(models.Model):
     nombre1 = models.CharField(max_length=30)
     nombre2 = models.CharField(max_length=30)
-    nombre3 = models.CharField(blank=True,max_length=30)
+    nombre3 = models.CharField(blank=True,max_length=30,null=True)
     apellido1 = models.CharField(max_length=30)
     apellido2 = models.CharField(blank=True,max_length=30)
 
@@ -52,7 +60,7 @@ class PeticionAdmision(models.Model):
     pais = models.ForeignKey(Pais,on_delete=models.CASCADE)
     
 class DocIdentidad(models.Model):
-    tipoDoc = models.OneToOneField(TipoDocIdentidad,on_delete=models.CASCADE)
+    tipoDoc = models.ForeignKey(TipoDocIdentidad,on_delete=models.CASCADE)
     numero = models.CharField(max_length = 30)
     peticionAdmision = models.OneToOneField(PeticionAdmision,on_delete=models.CASCADE)
 
@@ -86,7 +94,7 @@ class Trabajo(models.Model):
 class Vivienda(models.Model):
     propietario = models.CharField(blank=True,max_length=30)
     parentesco = models.CharField(max_length=20)
-    tenenciaVivienda = models.CharField(max_length=30)
+    tenenciaVivienda = models.CharField(max_length=30,choices=tenencia_viviendaChoices)
     tiempo = models.IntegerField()
     ubicacion = models.CharField(blank=True,max_length=150) #Crear la clase ubicacion
     peticionAdmision = models.OneToOneField(PeticionAdmision,on_delete=models.CASCADE)
@@ -130,6 +138,22 @@ class Asociacion(models.Model):
 
 class DocAnexo(models.Model):
     nombre = models.CharField(max_length=50)
-    doc = models.FileField(blank=True)
+    doc = models.FileField(upload_to='documentos',blank=True,null=True)
     peticionAdmision = models.ForeignKey(PeticionAdmision,on_delete=models.CASCADE)
 
+class ReciboIngreso(models.Model):
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    descripcion = models.CharField(max_length=100)
+    tipo = models.CharField(max_length=30)
+    aspirante = models.OneToOneField(Aspirante,on_delete=models.CASCADE)
+class Cuenta(models.Model):
+    codigo=models.CharField(max_length=8)
+    tipo=models.CharField(max_length=10)
+    saldo=models.DecimalField(max_digits=10, decimal_places = 2)
+    aspirante = models.ForeignKey(Aspirante,on_delete=models.CASCADE)
+
+class Expediente():
+    pass
+class Foto():
+    foto = models.ImageField()
+    aspirante= models.OneToOneField(Aspirante,on_delete=models.CASCADE)

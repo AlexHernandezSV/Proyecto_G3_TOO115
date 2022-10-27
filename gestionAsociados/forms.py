@@ -1,5 +1,7 @@
 #from socket import fromshare
+from xml.parsers.expat import model
 from django import forms
+from django.forms import modelformset_factory
 from gestionAsociados.models import *
 
 
@@ -10,83 +12,117 @@ class registerAspirantForm(forms.Form):
 
 class peticionAspiranteForm(forms.Form):
     #Datos personales
-    nombre1 = forms.CharField(label="Primer nombre",max_length=30)
-    nombre2 = forms.CharField(label="Segundo nombre",max_length=30)
-    nombre3 = forms.CharField(label="Tercer nombre",max_length=30)
-    apellido1 = forms.CharField(label="Primer apellido",max_length=30)
-    apellido2 = forms.CharField(label="Segundo apellido",max_length=30)
-    docIdentidad = forms.CharField(label="Documento de Identificación", max_length=20)
-    fechaNac = forms.DateField(label="Fecha de nacimiento")
-    lugarNac = forms.CharField(label="Lugar de nacimiento",max_length=150)
-    direccion = forms.CharField(label="Dirección",max_length=250)
-    email = forms.EmailField(label="Email")
-    departamento = forms.ModelChoiceField(label="Departamento",queryset=Departamento.objects.all())
-    municipio = forms.ModelChoiceField(label="Municipio",queryset=Municipio.objects.all())
-    pais = forms.ModelChoiceField(label="País",queryset=Pais.objects.all())
-    personasDependientes = forms.IntegerField(label="Nº de Personas que dependen de mí")
+    nombre1 = forms.CharField(label="Primer nombre",max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    nombre2 = forms.CharField(label="Segundo nombre",max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    nombre3 = forms.CharField(label="Tercer nombre",max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    apellido1 = forms.CharField(label="Primer apellido",max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    apellido2 = forms.CharField(label="Segundo apellido",max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    tipoDoc = forms.ModelChoiceField(label="Tipo de documento",queryset=TipoDocIdentidad.objects.all(),widget=forms.Select(attrs={"class":"form-select"}))
+    numeroDoc = forms.CharField(label="Numero de documento",max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    fechaNac = forms.DateField(label="Fecha de nacimiento",widget=forms.DateInput(attrs={"class":"form-control"}))
+    lugarNac = forms.CharField(label="Lugar de nacimiento",max_length=150,widget=forms.TextInput(attrs={"class":"form-control"}))
+    direccion = forms.CharField(label="Dirección",max_length=250,widget=forms.TextInput(attrs={"class":"form-control"}))
+    email = forms.EmailField(label="Email",widget=forms.EmailInput(attrs={"class":"form-control"}))
+    departamento = forms.ModelChoiceField(label="Departamento",queryset=Departamento.objects.all(),widget=forms.Select(attrs={"class":"form-select"}))
+    municipio = forms.ModelChoiceField(label="Municipio",queryset=Municipio.objects.all(),widget=forms.Select(attrs={"class":"form-select"}))
+    pais = forms.ModelChoiceField(label="País",queryset=Pais.objects.all(),widget=forms.Select(attrs={"class":"form-select"}))
+    personasDependientes = forms.IntegerField(label="Nº de Personas que dependen de mí",widget=forms.TextInput(attrs={"class":"form-control"}))
     #verificada = forms.BooleanField(label="Verificada",disabled=True)
     #aprobada = forms.BooleanField(label="Aprobada",disabled=True)
     #estado = forms.BooleanField(label="Estado",disabled=True)
-    tipoDoc = forms.ModelChoiceField(label="Tipo de documento",queryset=TipoDocIdentidad.objects.all())
-    numero = forms.CharField(label="Documento de Identificación",max_length = 30)
-    #Vivienda
-    propietario = forms.CharField(label="Propietario",max_length=30,required=False)
-    parentesco = forms.CharField(label="Parentesco",max_length=20,required=False)
-    tenenciaVivienda = forms.CharField(label="Tenencia de vivienda",max_length=30)
-    tiempo = forms.IntegerField(label="Tiempo",)
-    ubicacion = forms.CharField(label="Ubicación",max_length=150,required=False)
 
-class DocIdendadForm(forms.Form):
+class DocIdentidadForm(forms.Form):
     tipoDoc = forms.ModelChoiceField(label="Tipo de documento",queryset=TipoDocIdentidad.objects.all())
-    numero = models.CharField(max_length = 30)
+    numero = forms.CharField(label='Numero de documento',max_length = 30)
 
 #Este sirve para las referencias familiares y los padres
 class FamiliaresForm(forms.Form):
-    parentesco = forms.CharField(max_length=20)
-    nombre = forms.CharField(max_length=30)
-    apellido = forms.CharField(max_length=30)
-    telefono = forms.CharField(max_length=15)
-    email = forms.EmailField()
-    municipio= forms.ModelChoiceField(queryset=Municipio.objects.all())
-    departamento= forms.ModelChoiceField(queryset=Departamento.objects.all())
+    parentescoFamiliar = forms.CharField(max_length=20,widget=forms.TextInput(attrs={"class":"form-control"}))
+    nombreFamiliar = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    apellidoFamiliar = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    telefonoFamiliar = forms.CharField(max_length=15,widget=forms.TextInput(attrs={"class":"form-control"}))
+    emailFamiliar = forms.EmailField(widget=forms.EmailInput(attrs={"class":"form-control"}))
+    municipioFamiliar= forms.ModelChoiceField(queryset=Municipio.objects.all(),widget=forms.Select(attrs={"class":"form-select"}))
+    departamentoFamiliar= forms.ModelChoiceField(queryset=Departamento.objects.all(),widget=forms.Select(attrs={"class":"form-select"}))
 
 class NegocioForm(forms.Form):
-    nombreNegocio = forms.CharField(max_length= 30)
-    direccion = forms.CharField(max_length=250)
-    telefono = forms.CharField(max_length=30)
-    email = forms.EmailField()
-    numRegistroIva = forms.CharField(max_length = 50)
-    giro = forms.CharField(max_length= 150)
-    numTrabajadores = forms.IntegerField()
-    capital = forms.DecimalField(max_digits=13,decimal_places=4)
-    mercancia = forms.DecimalField(max_digits=13,decimal_places=4)
-    mobiliarioEquipo = forms.DecimalField(max_digits=12,decimal_places=2)
+    nombreNegocio = forms.CharField(max_length= 30,required=False,widget=forms.TextInput(attrs={"class":"form-control"}))
+    direccionNegocio = forms.CharField(max_length=250,required=False,widget=forms.TextInput(attrs={"class":"form-control"}))
+    telefonoNegocio = forms.CharField(required=False,max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    emailNegocio = forms.EmailField(required=False,widget=forms.EmailInput(attrs={"class":"form-control"}))
+    numRegistroIva = forms.CharField(max_length = 50,required=False,widget=forms.TextInput(attrs={"class":"form-control"}))
+    giro = forms.CharField(max_length= 150,required=False,widget=forms.TextInput(attrs={"class":"form-control"}))
+    numTrabajadores = forms.IntegerField(required=False,widget=forms.NumberInput(attrs={"class":"form-control"}))
+    capital = forms.DecimalField(max_digits=13,decimal_places=4,required=False,widget=forms.NumberInput(attrs={"class":"form-control"}))
+    mercancia = forms.DecimalField(max_digits=13,decimal_places=4,required=False,widget=forms.NumberInput(attrs={"class":"form-control"}))
+    mobiliarioEquipo = forms.DecimalField(max_digits=12,decimal_places=2,required=False,widget=forms.NumberInput(attrs={"class":"form-control"}))
 
 class TrabajoForm(forms.Form):
-    tipo = forms.CharField(max_length=30)
-    lugarTrabajo = forms.CharField(max_length=30)
-    direccion = forms.CharField(max_length=250)
-    telefono = forms.CharField(max_length=30)
-    email = forms.EmailField()
-    sueldo = forms.DecimalField(max_digits=10,decimal_places=4)
-    cargo = forms.CharField(max_length=30)
-    jefe = forms.CharField(max_length=30)    
+    tipo = forms.CharField(required=False,max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    lugarTrabajo = forms.CharField(required=False,max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    direccionTrabajo= forms.CharField(required=False,max_length=250,widget=forms.TextInput(attrs={"class":"form-control"}))
+    telefonoTrabajo = forms.CharField(required=False,max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    emailTrabajo = forms.EmailField(required=False,widget=forms.TextInput(attrs={"class":"form-control"}))
+    sueldo = forms.DecimalField(required=False,max_digits=10,decimal_places=4,widget=forms.TextInput(attrs={"class":"form-control"}))
+    cargo = forms.CharField(required=False,max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    jefe = forms.CharField(required=False,max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))    
 
 class ConyegeForm(forms.Form):
-    nombre = forms.CharField(max_length=30)
-    apellido = forms.CharField(max_length=30)
-    docIdentidad = forms.CharField(max_length = 15)
-    telefono = forms.CharField(max_length=15)
+    nombreC = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    apellidoC = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    docIdentidadC = forms.CharField(max_length = 15,widget=forms.TextInput(attrs={"class":"form-control"}))
+    telefonoC = forms.CharField(max_length=15,widget=forms.TextInput(attrs={"class":"form-control"}))
 
 class ReferenciaPersonalForm(forms.Form):
-    nombre = forms.CharField(max_length=30)
-    apellido = forms.CharField(max_length=30)
-    telefono = forms.CharField(max_length=15)
-    email = forms.EmailField()
+    nombreRef = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    apellidoRef = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    telefonoRef = forms.CharField(max_length=15,widget=forms.TextInput(attrs={"class":"form-control"}))
+    emailRef = forms.EmailField(widget=forms.EmailInput(attrs={"class":"form-control"}))
 
 class BeneficiarioForm(forms.Form):
-    parentesco = forms.CharField(max_length=20)
-    nombre = forms.CharField(max_length=30)
-    apellido = forms.CharField(max_length=30)
-    beneficio = forms.DecimalField(max_digits=10,decimal_places=4)
+    parentescoBeneficiario = forms.CharField(max_length=20,widget=forms.TextInput(attrs={"class":"form-control"}))
+    nombreBeneficiario = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    apellidoBeneficiario = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    beneficio = forms.DecimalField(max_digits=10,decimal_places=4,widget=forms.NumberInput(attrs={"class":"form-control"}))
 
+class ViviendaForm(forms.ModelForm):
+    #Vivienda
+    class Meta:
+        model = Vivienda
+        fields = ['tenenciaVivienda','propietario','parentesco','tiempo','ubicacion']
+        
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+
+        self.fields['tenenciaVivienda'].widget.attrs.update({
+            'class':'form-select'
+        })
+        self.fields['propietario'].widget.attrs.update({
+            'class':'form-select'
+        })
+        self.fields['parentesco'].widget.attrs.update({
+            'class':'form-select'
+        })
+        self.fields['tiempo'].widget.attrs.update({
+            'class':'form-select'
+        })
+        self.fields['ubicacion'].widget.attrs.update({
+            'class':'form-select'
+        })
+
+class DocAnexoForm(forms.Form):
+    nombreDocAnexo = forms.CharField(label='Nombre del documento',max_length=30,required=False,widget=forms.TextInput(attrs={'class':'form-control'}))
+    docAnexo = forms.FileField(label='Doc',max_length=30,required=False)
+
+BeneficiarioFormSet = modelformset_factory(
+    Beneficiario,
+    exclude=('peticionAdmision',),
+    extra=2,
+    max_num=5,
+    widgets={
+        'parentesco': forms.TextInput(attrs={'class':'form-control'}),
+        'nombre': forms.TextInput(attrs={'class':'form-control'}),
+        'apellido': forms.TextInput(attrs={'class':'form-control'}),
+        'beneficio': forms.NumberInput(attrs={'class':'form-control'}),
+    }
+)

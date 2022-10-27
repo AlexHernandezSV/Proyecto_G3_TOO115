@@ -1,5 +1,4 @@
 from django.urls import include,path
-
 import user
 from . import views
 from .views import crearPeticionAdmision, login_user
@@ -18,4 +17,5 @@ urlpatterns = [
     path('solicitud_aspirante', crearPeticionAdmision),
 ]
 
-
+if(settings.DEBUG):
+    urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
