@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'gestionAsociados',
     'gestionCooperativa',
     'user',
+    'cobros',
 ]
 
 MIDDLEWARE = [

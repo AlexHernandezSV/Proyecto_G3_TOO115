@@ -1,0 +1,26 @@
+{% extends "gestionAsociados/base.html" %}
+{% load static %}
+{% block title %} Registro de aspirante {% endblock %}
+    
+{% block content %}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2>Editar cuota</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <form action="/cobros/editarCuota/{{ cuota.id }}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="monto">Ingrese el monto</label>
+                                <input type="number" step="0.01" id="monto" name="txtMonto" value="{{cuota.monto}}" step="any" class="form-control" placeholder="Monto" required>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+    </div>
+</div>
+{% endblock%}

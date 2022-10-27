@@ -1,0 +1,66 @@
+{% extends "gestionAsociados/base.html" %}
+{% load static %}
+{% block title %} Registro de aspirante {% endblock %}
+    
+{% block content %}
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                <h2 style="margin-left: 10px;">Registrar cuota</h2>
+                <div class="card" style="margin-left: 10px;">
+                    <div class="card-body">
+                        <form action="registrarCuota" method="POST">{% csrf_token %}
+                            <div class="form-group">
+                                <label for="tipo">Seleccione el tipo</label>
+                                <select name="tipo" id="tipo" class="form-select">
+                                    <option value="1">Apertura</option>
+                                    <option value="2">Aportacion</option>
+                                    <option value="3">Educacion</option>
+                                </select>
+                                <label for="monto">Ingrese el monto</label>
+                                <input type="number" step="0.01" id="monto" name="txtMonto" class="form-control" placeholder="Monto" required>
+                                <label for="fechaIn">Seleccione fecha de inicio</label>
+                                <input type="date" id="fecha_inicio" name="txtFechaInicio" class="form-control" required>
+                                <label for="fechaFin">Selecione fecha final</label>
+                                <input type="date" id="fecha_final" name="txtFechaFinal" class="form-control" required>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block text-white">Guardar cuota</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+                <h1>Listado de cuotas</h1>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Tipo</th>
+                                <th>Monto</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Final</th>
+                                <th colspan="1">Opcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in cuotas %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{c.get_tipo_display}}</td>
+                                <td>${{c.monto}}</td>
+                                <td>{{c.fecha_inicio}}</td>
+                                <td>{{c.fecha_fin}}</td>
+                                <!--<td><a href="edicionCuota/{{c.id}}" class="btn btn-info">Editar</a></td>>-->
+                                <td><a href="eliminarCuota/{{c.id}}" class="btn btn-danger">Eliminar</a></td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+{% endblock%}

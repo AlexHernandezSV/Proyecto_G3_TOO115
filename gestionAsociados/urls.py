@@ -15,7 +15,7 @@ urlpatterns = [
     path('registerCJ', views.RegisterCajero.as_view()),
     path('login', login_user,name="iniciar sesion"),
     path('user/', include('user.urls')),
-    path('solicitud_aspirante', crearPeticionAdmision)    
+    path('solicitud_aspirante', crearPeticionAdmision),
 ]
 
 
