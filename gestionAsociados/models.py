@@ -27,8 +27,8 @@ class Municipio(models.Model):
 
 class Pais(models.Model):
     codigo = models.CharField(max_length=5)
-    nombre = models.CharField(max_length=30)
-    extensionTelefono = models.CharField(blank=True,max_length=10)
+    nombre = models.CharField(max_length=200)
+    extensionTelefono = models.CharField(blank=True,max_length=10,null=True)
     def __str__(self):
         return self.nombre
 
@@ -96,7 +96,9 @@ class Vivienda(models.Model):
     parentesco = models.CharField(max_length=20)
     tenenciaVivienda = models.CharField(max_length=30,choices=tenencia_viviendaChoices)
     tiempo = models.IntegerField()
-    ubicacion = models.CharField(blank=True,max_length=150) #Crear la clase ubicacion
+    #ubicacion = models.CharField(blank=True,max_length=150,null=True) #Crear la clase ubicacion
+    lat = models.CharField(max_length=64)
+    lng = models.CharField(max_length=64)
     peticionAdmision = models.OneToOneField(PeticionAdmision,on_delete=models.CASCADE)
 
 class Conyuge(models.Model):

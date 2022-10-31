@@ -222,7 +222,9 @@ def crearPeticionAdmision(request):
                     parentesco = infFormVivienda['parentesco'],
                     tenenciaVivienda = infFormVivienda['tenenciaVivienda'],
                     tiempo = infFormVivienda['tiempo'],
-                    ubicacion = infFormVivienda['ubicacion'],
+                    #ubicacion = infFormVivienda['ubicacion'],
+                    lat = infFormVivienda['lat'],
+                    lng = infFormVivienda['lng'],
                     peticionAdmision = miPeticion
                 )
                 documentoIdentificacion = DocIdentidad(

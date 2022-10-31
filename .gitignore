@@ -1,0 +1,9 @@
+
+*.pyc
+*.jpg
+*.png
+*.jpeg
+gestionAsociados/migrations/*
+user/migrations/*
+gestionCooperativa/migrations/*
+cobros/migrations/*
