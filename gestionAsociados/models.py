@@ -14,13 +14,13 @@ tenencia_viviendaChoices = [
 
 class Departamento(models.Model):
     codigo = models.CharField(max_length=8)
-    nombre = models.CharField(max_length=30)
+    nombre = models.CharField(max_length=64)
     def __str__(self):
         return self.nombre
 
 class Municipio(models.Model):
     codigo = models.CharField(max_length=8)
-    nombre = models.CharField(max_length=30)
+    nombre = models.CharField(max_length=64)
     departamento = models.ForeignKey(Departamento,on_delete=models.CASCADE)
     def __str__(self):
         return self.nombre
