@@ -85,34 +85,61 @@ $(document).ready(function(){
     let thisMarker;
     
     function initMap() {
-        
-       navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
+      if(navigator.geolocation){
 
-              const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 4,
-                center: pos, //{ lat: -25.363882, lng: 131.044922 },
-              });
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
 
-              thisMarker = new google.maps.Marker({
-                position: pos,//{lat:-25.363882, lng:131.044922},
-                map: map,
-                draggable: true,
-            })
-            /*inputLat.value = thisMarker.position.lat();
-            inputLng.value = thisMarker.position.lng();
-            */
-           placeMarkerAndPanTo(pos,map)
-            //Click event
-            map.addListener("onmousedown", (e) => {
-                placeMarkerAndPanTo(e.latLng, map);
-              });
+            const map = new google.maps.Map(document.getElementById("map"), {
+              zoom: 4,
+              center: pos, //{ lat: -25.363882, lng: 131.044922 },
+            });
 
+            thisMarker = new google.maps.Marker({
+              position: pos,//{lat:-25.363882, lng:131.044922},
+              map: map,
+              draggable: true,
+          })
+          /*inputLat.value = thisMarker.position.lat();
+          inputLng.value = thisMarker.position.lng();
+          */
+         placeMarkerAndPanTo(pos,map)
+          //Click event
+          map.addListener("onmousedown", (e) => {
+              placeMarkerAndPanTo(e.latLng, map);
+            });
+
+      })
+
+      }else {
+          // Browser doesn't support Geolocation
+          pos = {
+            lat: -25.363882,
+            lng:131.044922,
+          }
+          const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 4,
+            center: pos, //{ lat: -25.363882, lng: 131.044922 },
+          });
+
+          thisMarker = new google.maps.Marker({
+            position: pos,//{lat:-25.363882, lng:131.044922},
+            map: map,
+            draggable: true,
         })
+        /*inputLat.value = thisMarker.position.lat();
+        inputLng.value = thisMarker.position.lng();
+        */
+       placeMarkerAndPanTo(pos,map)
+        //Click event
+        map.addListener("onmousedown", (e) => {
+            placeMarkerAndPanTo(e.latLng, map);
+          });
+        }
 
           function placeMarkerAndPanTo(latLng, map) {
             /*thisMarker = new google.maps.Marker({
