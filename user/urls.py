@@ -1,10 +1,12 @@
 from django.urls import path
 import user
-from user.views import *
+from . import views
 
 app_name = 'user'
 
 urlpatterns = [
     #user
-    path('list/', lista, name ='user_list'),
+    #path('list/', lista, name ='user_list'),
+    path('lista', views.lista , name="Lista usuarios"),
+
 ]

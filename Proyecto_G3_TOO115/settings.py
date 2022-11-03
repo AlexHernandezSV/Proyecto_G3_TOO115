@@ -42,6 +42,15 @@ INSTALLED_APPS = [
     'gestionCooperativa',
     'user',
     'cobros',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_email',  # <- if you want email capability.
+    'two_factor',
+    'two_factor.plugins.phonenumber',  # <- if you want phone number capability.
+    'two_factor.plugins.email',  # <- if you want email capability.
+    'two_factor.plugins.yubikey',  # <- for yubikey capability.
+    'otp_yubikey',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +61,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'Proyecto_G3_TOO115.urls'
@@ -153,4 +165,10 @@ EMAIL_HOST_USER = "tecnoinnovag3@gmail.com"
 EMAIL_HOST_PASSWORD= "jcydkpopbzklosbh"
 
 #Contraseña del correo tecnoinnovag3@gmail.com : too.grupo.03
+
+
+LOGIN_URL = 'two_factor:login'
+
+# este es opcional
+LOGIN_REDIRECT_URL = 'two_factor:profile'
 

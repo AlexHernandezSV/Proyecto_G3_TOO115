@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include,path
+from two_factor.urls import urlpatterns as tf_urls
 
 urlpatterns = [
     
     path('admin/', admin.site.urls),
+    path('', include(tf_urls)),
     path('',include('cobros.urls')),
     path('',include('gestionAsociados.urls')),
     path('',include('gestionCooperativa.urls')),
+    path('',include('user.urls')),
+
 ]

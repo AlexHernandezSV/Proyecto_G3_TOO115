@@ -3,23 +3,39 @@
 {% block title %} Registro de aspirante {% endblock %}
     <script src="{% static 'user/js/list.js' %}"></script>
 {% block content %}
-    <h1>Listado de usuarios delsistema</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Rol</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for usuario in usuarios %}
-            <tr>
-                <td>{{usuario.id}}</td>
-                <td>{{usuario.username}}</td>
-                <td>{{usuario.role}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="col-sm-12 col-md-6 col-lg-8 col-xl-8" style="margin-left: 20px;">
+    <h1>Listado de usuarios del sistema</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Nombre</th>
+                    <th>Ultimo acceso</th>
+                    <th>Rol</th>
+                    <th>Activo</th>
+                    <!--<th colspan="1">Opcion</th>-->
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{usuario.id}}</td>
+                    <td>{{usuario.username}}</td>
+                    <td>{{usuario.first_name}}</td>
+                    <td>{{usuario.last_login}}</td>
+                    <td>{{usuario.role}}</td>
+                    <td>{{usuario.is_active}}</td>
+                    <!--<td><a href="edicionCuota/{{c.id}}" class="btn btn-info">Editar</a></td>>
+                    <td><a href="eliminarCuota/{{c.id}}" class="btn btn-danger">Eliminar</a></td>-->
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock%}

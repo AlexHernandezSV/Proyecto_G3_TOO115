@@ -3,14 +3,18 @@
 {% block title %} Registro de Cajeros {% endblock %}
 
 {% block content %}
-<div>
-    <h3>Registro de Cajeros</h3>
-</div>
-    <div>
-        <form method="POST">
-            {% csrf_token %}
-            {{form}}
-            <button>Registrar cajero</button>
-        </form>
+    <div class="row">
+        <div>
+            <h2 style="margin-left: 10px;">Registrar cajero</h2>
+            <div class="card" style="margin-left: 10px; margin-right: 10px;">
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{form}}
+                        <button>Registrar cajero</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock%}
