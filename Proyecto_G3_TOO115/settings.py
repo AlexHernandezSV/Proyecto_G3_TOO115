@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'gestionCooperativa',
     'user',
     'cobros',
+    'verificarInformacion',
     'django_otp',
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
