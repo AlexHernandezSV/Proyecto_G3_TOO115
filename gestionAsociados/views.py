@@ -25,6 +25,9 @@ def holamundo(request):
 def home(request):
     return render(request,'gestionAsociados/home.html')
 
+
+def homeEjecutiva(request):
+    return render(request,'gestionAsociados/homeEjecutiva.html')
 """def crearUsuario(request):
 
     return render(request, 'gestionAsociados/singUp.html')"""
@@ -137,7 +140,7 @@ def login_user(request):
             print(usuario)
             if usuario is not None:
                 login(request,usuario)
-                return redirect('/holamundo')
+                return redirect('/homeEjecutiva')
             else:
                 message.error(request,"Usuario no registrado en el sistema")
         else:

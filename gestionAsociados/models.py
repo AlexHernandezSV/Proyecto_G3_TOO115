@@ -14,13 +14,13 @@ tenencia_viviendaChoices = [
 
 class Departamento(models.Model):
     codigo = models.CharField(max_length=8)
-    nombre = models.CharField(max_length=64)
+    nombre = models.CharField(max_length=30)
     def __str__(self):
         return self.nombre
 
 class Municipio(models.Model):
-    codigo = models.CharField(max_length=8)
-    nombre = models.CharField(max_length=64)
+    codigo = models.CharField(max_length=99)
+    nombre = models.CharField(max_length=99)
     departamento = models.ForeignKey(Departamento,on_delete=models.CASCADE)
     def __str__(self):
         return self.nombre
@@ -58,6 +58,8 @@ class PeticionAdmision(models.Model):
     departamento = models.ForeignKey(Departamento,on_delete=models.CASCADE)
     municipio = models.ForeignKey(Municipio,on_delete=models.CASCADE)
     pais = models.ForeignKey(Pais,on_delete=models.CASCADE)
+    ejecutivoVerificado = models.CharField(blank=True,max_length=30,null=True)
+    observacionesVerificado = models.CharField(blank=True,max_length=30,null=True)
     
 class DocIdentidad(models.Model):
     tipoDoc = models.ForeignKey(TipoDocIdentidad,on_delete=models.CASCADE)
