@@ -19,16 +19,16 @@ class Departamento(models.Model):
         return self.nombre
 
 class Municipio(models.Model):
-    codigo = models.CharField(max_length=8)
-    nombre = models.CharField(max_length=30)
+    codigo = models.CharField(max_length=99)
+    nombre = models.CharField(max_length=99)
     departamento = models.ForeignKey(Departamento,on_delete=models.CASCADE)
     def __str__(self):
         return self.nombre
 
 class Pais(models.Model):
     codigo = models.CharField(max_length=5)
-    nombre = models.CharField(max_length=30)
-    extensionTelefono = models.CharField(blank=True,max_length=10)
+    nombre = models.CharField(max_length=200)
+    extensionTelefono = models.CharField(blank=True,max_length=10,null=True)
     def __str__(self):
         return self.nombre
 
@@ -58,6 +58,8 @@ class PeticionAdmision(models.Model):
     departamento = models.ForeignKey(Departamento,on_delete=models.CASCADE)
     municipio = models.ForeignKey(Municipio,on_delete=models.CASCADE)
     pais = models.ForeignKey(Pais,on_delete=models.CASCADE)
+    ejecutivoVerificado = models.CharField(blank=True,max_length=30,null=True)
+    observacionesVerificado = models.CharField(blank=True,max_length=30,null=True)
     
 class DocIdentidad(models.Model):
     tipoDoc = models.ForeignKey(TipoDocIdentidad,on_delete=models.CASCADE)
@@ -96,7 +98,9 @@ class Vivienda(models.Model):
     parentesco = models.CharField(max_length=20)
     tenenciaVivienda = models.CharField(max_length=30,choices=tenencia_viviendaChoices)
     tiempo = models.IntegerField()
-    ubicacion = models.CharField(blank=True,max_length=150) #Crear la clase ubicacion
+    #ubicacion = models.CharField(blank=True,max_length=150,null=True) #Crear la clase ubicacion
+    lat = models.CharField(max_length=64)
+    lng = models.CharField(max_length=64)
     peticionAdmision = models.OneToOneField(PeticionAdmision,on_delete=models.CASCADE)
 
 class Conyuge(models.Model):

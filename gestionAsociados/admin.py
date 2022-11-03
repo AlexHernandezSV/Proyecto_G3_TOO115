@@ -27,8 +27,9 @@ class FamiliarAdmin(admin.TabularInline):
     model = Familiar
 class ConyugeAdmin(admin.StackedInline):
     model = Conyuge
-class ViviendaAdmin(admin.TabularInline):
+class ViviendaAdmin(admin.StackedInline):
     model = Vivienda
+
 class DocAnexoAdmin(admin.TabularInline):
     model = DocAnexo
 
@@ -43,6 +44,7 @@ class NegocioAdmin(admin.StackedInline):
 class PeticionAdmisionAdmin(admin.ModelAdmin):
     inlines = [
         DocIdentidadAdmin,
+        ViviendaAdmin,
         ConyugeAdmin,
         ReferenciaPersonalAdmin,
         FamiliarAdmin,

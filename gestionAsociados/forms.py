@@ -1,9 +1,16 @@
 #from socket import fromshare
+from turtle import textinput
 from xml.parsers.expat import model
 from django import forms
 from django.forms import modelformset_factory
 from gestionAsociados.models import *
 
+tenencia_viviendaChoices = [
+    ('Propia','Propia'),
+    ('Alquilada','Alquilada'),
+    ('Promesa de venta','Promesa de venta'),
+    ('Familiar','Familiar')
+]
 
 class registerAspirantForm(forms.Form):
     nombre = forms.CharField(label="Nombre", max_length=30)
@@ -85,30 +92,14 @@ class BeneficiarioForm(forms.Form):
     apellidoBeneficiario = forms.CharField(max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
     beneficio = forms.DecimalField(max_digits=10,decimal_places=4,widget=forms.NumberInput(attrs={"class":"form-control"}))
 
-class ViviendaForm(forms.ModelForm):
-    #Vivienda
-    class Meta:
-        model = Vivienda
-        fields = ['tenenciaVivienda','propietario','parentesco','tiempo','ubicacion']
-        
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-
-        self.fields['tenenciaVivienda'].widget.attrs.update({
-            'class':'form-select'
-        })
-        self.fields['propietario'].widget.attrs.update({
-            'class':'form-select'
-        })
-        self.fields['parentesco'].widget.attrs.update({
-            'class':'form-select'
-        })
-        self.fields['tiempo'].widget.attrs.update({
-            'class':'form-select'
-        })
-        self.fields['ubicacion'].widget.attrs.update({
-            'class':'form-select'
-        })
+class ViviendaForm(forms.Form):
+    propietario = forms.CharField(label='Propietario',max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    parentesco = forms.CharField(label='Parentesco',max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    tenenciaVivienda = forms.ChoiceField(label='Tenencia de vivieda',choices=tenencia_viviendaChoices,widget=forms.Select(attrs={"class":"form-select"}))
+    tiempo = forms.CharField(label='Tiempo',max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    #ubicacion = forms.CharField(label='Ubicacion',max_length=30,widget=forms.TextInput(attrs={"class":"form-control"}))
+    lat = forms.CharField(label='Seleccione Ubicacion',max_length=30, widget=forms.TextInput(attrs={"class":"form-control",'hidden':'true'}))
+    lng = forms.CharField(label='',max_length=30,widget=forms.TextInput(attrs={"class":"form-control",'hidden':'true'}))
 
 class DocAnexoForm(forms.Form):
     nombreDocAnexo = forms.CharField(label='Nombre del documento',max_length=30,required=False,widget=forms.TextInput(attrs={'class':'form-control'}))

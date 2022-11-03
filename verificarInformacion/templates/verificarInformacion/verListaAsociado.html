@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.98.0">
-    <title>Ver Informacion</title>
+    <title>Ver Lista</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sticky-footer-navbar/">
 
@@ -80,14 +80,14 @@
   <!-- Fixed navbar -->
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Ver informacion de Cooperativa</a>
+      <a class="navbar-brand" href="#">Ver Lista de Asociados</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link " aria-current="page" href="home"">Inicio</a>
+            <a class="nav-link " aria-current="page" href="home">Inicio</a>
           </li>
           
         </ul>
@@ -106,7 +106,7 @@
     
       <div class="p-5 mb-4 bg-light rounded-3">
         <div class="container-fluid py-5">
-          <h1 class="display-5 fw-bold">Informacion registrada</h1>
+          <h1 class="display-5 fw-bold">Aspirantes a asociados</h1>
           <p class="col-md-8 fs-4"></p>
           <head>
             <meta charset="UTF-8">
@@ -119,29 +119,28 @@
            
               <table class="table table-striped">
                 <tr>
-               
+                <td>ID</td>
                 <td>Nombre</td>
-                <td>Departamento</td>
-                <td>Municipio</td>
-                <td>Años en Funcinamiento</td>
-                <td>Numero de empleados</td>
-                <td>Numero de registro</td>
-                <td>Descripcion</td>
-                <td>Logo</td>
+                <td>Apellido</td>
+                <td>E-Mail</td>
+                <td>Ejecutivo que reviso</td>
+                <td>Observaciones</td>
+                <td>Verificacion</td>
+                <td>Verificar</td>
                 </tr>
                 
                 <tbody>
                 {% for stud in mostrar %}  
                 <tr>
                
-                <td>{{stud.nombre_text}}</td>
-                <td>{{stud.departamento_text}}</td>
-                <td>{{stud.municipio_text}}</td>
-                <td>{{stud.aniosFuncionando_numero}}</td>
-                <td>{{stud.numeroEmpleados_numero}}</td>
-                <td>{{stud.numeroRegistro_text}}</td>
-                <td>{{stud.descripcion_text}}</td>
-                <td><img src="/media/{{ stud.logo_img }}" width="200" height="200"></td>
+                <td>{{stud.id}}</td>
+                <td>{{stud.nombre1}}</td>
+                <td>{{stud.apellido1}}</td>
+                <td>{{stud.email}}</td>
+                <td>{{stud.ejecutivoVerificado}}</td>
+                <td>{{stud.observacionesVerificado}}</td>
+                <td>{{stud.verificada}}</td>
+                <td><button class="btn btn-primary btn-lg" type="button" onclick="window.location='verInfoAsociado/{{stud.id}}/';">Verificar</button></td>
                 
                 </tr>
                 {% endfor %} 
@@ -150,8 +149,7 @@
                 </table>
             </div>
           </body>
-          <button class="btn btn-primary btn-lg" type="button" onclick="window.location='editarInfoCoop';">Editar informacion</button>
-      
+          <br>
           <button class="btn btn-primary btn-lg" type="button" onclick="window.location='homeEjecutiva';">Salir</button>
       
         </div>
