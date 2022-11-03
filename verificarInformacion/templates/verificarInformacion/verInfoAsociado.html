@@ -1,0 +1,561 @@
+{% load static %}
+
+
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.98.0">
+    <title>Proyecto G3</title>
+
+    
+    
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/bootstrap/scripts/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+
+    
+
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+    
+    
+  </head>
+  <body class="d-flex flex-column h-100">
+    
+<header>
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Verificar informacion de Asociado</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href=/home>Inicio</a>
+          </li>
+          
+        </li>
+        
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</header>
+<body>
+  <main>
+    <div class="container py-4">
+    
+      <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+          <h1 >Aspirante a asociado <span class="badge bg-secondary">ID: {{ var }}</span></h1>
+          <body>
+              <div class="card mt-3 p-4" id="datos-personales">
+                <div class="card-title"><h2>Datos Personales </h2>
+                  <br>
+                {% for pet in peticionAdmision %}
+                {% if pet.id == var|add:"0" %}
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Primer nombre:</h6></span>
+                        <label><b>{{pet.nombre1}}</b></label>
+                        <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Segundo nombre:</h6></span>
+                        <label><b>{{pet.nombre2}}</b></label>
+                        <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Tercer nombre:</h6></span>
+                       <label><b>{{pet.nombre3}}</b></label>
+                       <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Primer apellido:</h6></span>
+                        <label><b>{{pet.apellido1}}</b></label>
+                        <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Segundo apellido:</h6></span>
+                        <label><b>{{pet.apellido2}}</b></label>
+                        <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Tipo de documento:</h6></span>
+                        <!-- Empezar for de tabla docidentidad -->
+                       {% for docId in docIdentidad %}
+                       <!-- Validar id de aspirante iniciar con id de peticionAdmision -->
+                       {% if docId.peticionAdmision_id == var|add:"0" %}
+                       <!-- <label><b>{{docId.tipoDoc_id}}</b></label> -->
+                        <!-- Empezar for de tabla tipoDocIdentidad   -->
+                       {% for doc in tipoDocIdentidad %}
+                        <!-- Salida de id de documento correspondiente en IF -->
+                       {% if doc.id == docId.tipoDoc_id|add:"0" %}
+                       <label><b>{{doc.nombreDocumento}}</b></label>
+                       {% endif %}
+                       {% endfor %}
+                       {% endif %}
+                       {% endfor %}
+                       <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Numero de Documento:</h6></span>
+                         <!-- Empezar for de tabla docidentidad -->
+                         {% for docId in docIdentidad %}
+                         <!-- Validar id de aspirante iniciar con id de peticionAdmision -->
+                         {% if docId.peticionAdmision_id == var|add:"0" %}
+                        <label><b>{{docId.numero}}</b></label>
+                        {% endif %}
+                        {% endfor %}
+                        <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Fecha de Nacimiento:</h6></span>
+                        <label><b>{{pet.fechaNac}}</b></label>
+                       </div>
+                    <div class="col">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Lugar de Nacimiento</h6></span>
+                       <label><b>{{pet.lugarNac}}</b></label>
+                       <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Direccion:</h6></span>
+                        <label><b>{{pet.direccion}}</b></label>
+                        <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Email:</h6></span>
+                        <label><b>{{pet.email}}</b></label>
+                        <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Departamento</h6></span>
+                         <!-- Empezar for de tabla departamentos -->
+                         {% for depto in departamento %}
+                          <!-- Salida de id de depto correspondiente en IF -->
+                         {% if depto.id == pet.departamento_id|add:"0" %}
+                         <label><b>{{depto.nombre}}</b></label>
+                         
+                         {% endif %}
+                         {% endfor %}
+                         <br><br>
+                         <span class="badge rounded-pill bg-light text-dark"><h6>Municipio:</h6></span>
+                       {% for muni in municipio %}
+                       {% if muni.id == pet.municipio_id|add:"0" %}
+                       <label><b>{{muni.nombre}}</b></label>
+                       {% endif %}
+                       {% endfor %}
+                      <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Pais:</h6></span>
+                        <!-- Empezar for de tabla pais -->
+                        {% for pais in pais %}
+                        <!-- Salida de id de depto correspondiente en IF -->
+                        {% if pais.id == pet.pais_id|add:"0" %}
+                       <label><b>{{pais.nombre}}</b></label>
+                       
+                       {% endif %}
+                       {% endfor %}
+                        <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Nº de Personas que dependen de mí</h6></span>
+                       <label><b>{{pet.personasDependientes}}</b></label>
+                    </div>
+                  </div>
+                </div>
+                
+                {% endif %}
+                {% endfor %}
+                    </div>
+                      
+                    </div>
+                    
+                  </div>
+                
+            <div class="card mt-3 p-4" id="datos-personales">
+              {% for viv in vivienda %}
+              {% if viv.peticionAdmision_id == var|add:"0" %}
+              <div class="card-title"><h2>Datos de Vivienda </h2>
+              <br>
+              <div class="row">
+                <div class="col">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Propietario:</h6></span>
+                    <label><b>{{viv.propietario}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Parentesco:</h6></span>
+                    <label><b>{{viv.parentesco}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Tenencia de vivienda:</h6></span>
+                    <label><b>{{viv.tenenciaVivienda}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Tiempo:</h6></span>
+                    <label><b>{{viv.tiempo}} años</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Ubicacion de vivienda:</h6></span>
+                    <label><b>{{viv.lat}} </b></label>
+                    <label><b>{{viv.lng}}</b></label>
+                    
+                </div>
+                <div class="col">
+                  
+                    <input type="hidden" id="myLat" name="variable" value="{{ viv.lat }}">
+                    <input type="hidden" id="myLng" name="variable" value="{{ viv.lng }}">
+                    
+                    
+                    <style>
+                      #map {
+                        width: 100%;
+                        height: 400px;
+                        background-color: grey;
+                      }
+                    </style>
+                    <div id="map"></div>
+                    <script>
+                      function initMap() {
+                        var myLat = document.getElementById("myLat").value;
+                        var myLng = document.getElementById("myLng").value;
+                        var lat=parseFloat(myLat)
+                        var lng=parseFloat(myLng)
+
+                        //var test= {lat: myLat, lng: myLng};
+                        var test= {lat: lat, lng: lng};
+                        console.log(myLat)
+                        console.log(myLng)
+                        console.log(lat)
+                        console.log(lng)
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                          zoom: 4,
+                          center: test
+                        });
+                        var marker = new google.maps.Marker({
+                          position: test,
+                          map: map
+                        });
+                      }
+                    </script>
+                    <script async defer
+                    src=
+                         "https://maps.googleapis.com/maps/api/js?key=AIzaSyCFodwYnV50ZvlLs9p57pVLiQJcTGIJSNc&callback=initMap">
+                    </script>
+ 
+
+                </div>
+              {% endif %}
+              {% endfor %}
+              </div>
+              </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title">
+                <div class="row">
+                  <div class="col">
+                    
+                    {% for trab in trabajo %}
+                    {% if trab.peticionAdmision_id == var|add:"0" %}
+                    <h2>Datos del trabajo </h2>
+                    <br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Tipo:</h6></span>
+                    <label><b>{{trab.tipo}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Lugar de Trabajo:</h6></span>
+                    <label><b>{{trab.lugarTrabajo}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Direccion de trabajo:</h6></span>
+                    <label><b>{{trab.direccion}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Telefono de trabajo:</h6></span>
+                    <label><b>{{trab.telefono}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Email de trabajo:</h6></span>
+                    <label><b>{{trab.email}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Sueldo:</h6></span>
+                    <label><b>{{trab.sueldo}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Cargo:</h6></span>
+                    <label><b>{{trab.cargo}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Jefe:</h6></span>
+                    <label><b>{{trab.jefe}}</b></label>
+                    <br><br>
+
+
+                    {% endif %}
+                    {% endfor %}
+
+                  </div>
+
+                  <div class="col">
+                  {% for neg in negocio %}
+                    {% if neg.peticionAdmision_id == var|add:"0" %}
+                    <h2>Datos del Negocio</h2>
+                    <br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Nombre del negocio:</h6></span>
+                    <label><b>{{neg.nombreNegocio}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Direccion del negocio:</h6></span>
+                    <label><b>{{neg.direccion}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Telefono del negocio:</h6></span>
+                    <label><b>{{neg.telefono}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Email del negocio:</h6></span>
+                    <label><b>{{neg.email}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Numero de Registro:</h6></span>
+                    <label><b>{{neg.numRegistro}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Giro del negocio:</h6></span>
+                    <label><b>{{neg.giro}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Numero de Trabajadores:</h6></span>
+                    <label><b>{{neg.numTrabajadores}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Capital:</h6></span>
+                    <label><b>{{neg.capital}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Mercancia:</h6></span>
+                    <label><b>{{neg.mercancia}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Mobiliario o equipos:</h6></span>
+                    <label><b>{{neg.mobiliarioEquipo}}</b></label>
+                    <br><br>
+
+                  {% endif %}
+                  {% endfor %}
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Datos del Conyuge </h2>
+                <br>
+                {% for con in conyuge %}
+                {% if con.peticionAdmision_id == var|add:"0" %}
+                    <div class="col">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Nombre del conyuge:</h6></span>
+                    <label><b>{{con.nombre}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Apellido del conyuge:</h6></span>
+                    <label><b>{{con.apellido}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Documento de identidad:</h6></span>
+                    <label><b>{{con.docIdentidad}}</b></label>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Telefono del conyuge:</h6></span>
+                    <label><b>{{con.telefono}}</b></label>
+                    <br><br>
+                    </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Familiares </h2>
+                <br>
+                {% for fam in familiar %}
+                {% if fam.peticionAdmision_id == var|add:"0" %}
+                <span class="badge bg-success"><h6>Familiar {{ forloop.counter }}</h6></span>
+                
+                <br><br>
+                <div class="col">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Parentesco familiar:</h6></span>
+                  <label><b>{{fam.parentesco}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de familiar:</h6></span>
+                  <label><b>{{fam.nombre}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Apellido de familiar:</h6></span>
+                  <label><b>{{fam.apellido}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Telefono de familiar:</h6></span>
+                  <label><b>{{fam.telefono}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Email de familiar:</h6></span>
+                  <label><b>{{fam.email}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Departamento de familiar</h6></span>
+                         <!-- Empezar for de tabla departamentos -->
+                         {% for depto in departamento %}
+                          <!-- Salida de id de depto correspondiente en IF -->
+                         {% if depto.id == fam.departamento_id|add:"0" %}
+                         <label><b>{{depto.nombre}}</b></label>
+                         
+                         {% endif %}
+                         {% endfor %}
+                         <br><br>
+                         <span class="badge rounded-pill bg-light text-dark"><h6>Municipio de familiar:</h6></span>
+                       {% for muni in municipio %}
+                       {% if muni.id == fam.municipio_id|add:"0" %}
+                       <label><b>{{muni.nombre}}</b></label>
+                       {% endif %}
+                       {% endfor %}
+                      
+                </div>
+                <br>
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Referencias Personales </h2>
+                <br>
+                {% for ref in referenciaPersonal %}
+                {% if ref.peticionAdmision_id == var|add:"0" %}
+                <span class="badge bg-warning text-dark"><h6>Referencia {{ forloop.counter }}</h6></span>
+                
+                <br><br>
+                <div class="col">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de referencia:</h6></span>
+                  <label><b>{{ref.nombre}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Apellido de referencia:</h6></span>
+                  <label><b>{{ref.apellido}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Telefono de referencia:</h6></span>
+                  <label><b>{{ref.telefono}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Email de referencia:</h6></span>
+                  <label><b>{{ref.email}}</b></label>
+                  <br><br>
+                  
+                </div>
+                <br>
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Beneficiarios </h2>
+                <br>
+                {% for ben in beneficiario %}
+                {% if ben.peticionAdmision_id == var|add:"0" %}
+                <span class="badge bg-primary"><h6>Beneficiario {{ forloop.counter }}</h6></span>
+                <br><br>
+                <div class="col">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Parentesco de beneficiario:</h6></span>
+                  <label><b>{{ben.parentesco}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de beneficiario:</h6></span>
+                  <label><b>{{ben.nombre}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Apellido de benificiario:</h6></span>
+                  <label><b>{{ben.apellido}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Beneficio</h6></span>
+                  <label><b>{{ben.beneficio}}</b></label>
+                  <br><br>
+                  
+                </div>
+                
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Documentos Subidos </h2>
+                <br>
+                {% for doc in docAnexo %}
+                {% if doc.peticionAdmision_id == var|add:"0" %}
+                <div class="col">
+                  <span class="badge bg-info text-dark"><h6>Documento {{ forloop.counter }}</h6></span>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de documento: </h6></span>
+                  <label><b>{{doc.nombre}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Descarga de documento: </h6></span>
+                  <a href="{{ doc.doc.url }}" download>{{doc.doc}}</a>
+                  <br><br>
+                </div>
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+          </body>
+          <br><br>
+          <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            
+            <div class="form-outline mb-4">
+              <label class="form-label" for="formaDescri">Observaciones</label>
+              
+              <textarea class="form-control" id="formaDescri" rows="4" name="observaciones" required></textarea>
+             
+            </div>
+            <div class="form-outline mb-4">
+              <label class="form-label" for="formaReg">Nombre de ejecutivo</label>
+              
+              <input type="text" id="formaReg" class="form-control" name="nombreE" required/>
+              
+            </div>
+            <button method="POST" class="btn btn-success btn-lg" type="submit" name="aprobar" value="True" >Aprobar</button>
+            <button method="POST" class="btn btn-danger btn-lg" type="submit" name="denegar" value="False">Denegar</button>
+            <button class="btn btn-primary btn-lg" type="button" onclick="window.location='/verListaAsociado';">Salir</button>
+          </form>
+          
+          
+
+        </div>
+        <footer >
+          &copy; 2022
+        </footer>
+      </div>
+    </div>
+    
+
+    </div>
+    </main>
+  
+</body>
