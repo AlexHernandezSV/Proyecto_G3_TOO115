@@ -1,0 +1,41 @@
+{% extends "gestionAsociados/base.html" %}
+{% load static %}
+{% block title %} Registro de aspirante {% endblock %}
+    
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="fw-bold">Agregar directivo</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="" class="form-label">Nombre completo</label>
+                                <input type="text" Required name="nombreDirec" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Cargo</label>
+                                <select name="cargo" id="cargo" class="form-select">
+                                    <option value="Presidente">Presidente</option>
+                                    <option value="Secretario">Secretario</option>
+                                </select>
+                            </div>
+                             <div class="mb-3">
+                                <label for="" class="form-label">Firma</label>
+                                <input type="file" Required name="firma" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <td><a href="/listaDirec" class="btn btn-danger">Cancelar</a></td>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock%}

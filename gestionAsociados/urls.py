@@ -29,6 +29,8 @@ urlpatterns = [
     path('gestionar_peticiones_verificadas',listAprobarPeticion),
     path('ver_solicitud_verificada/<int:id>',verSolicitudVerificada),
     path('',include('verificarInformacion.urls')),
+    path('registerEJ', views.RegisterEjecutivo.as_view()),
+
 ]
 
 if(settings.DEBUG):

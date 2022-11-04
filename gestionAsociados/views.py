@@ -6,7 +6,7 @@ from django.views.generic import View
 from django.utils.crypto import get_random_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from datetime import date,datetime
-from user.models import Aspirante, Cajero, JefeOperaciones
+from user.models import Aspirante, Cajero, JefeOperaciones, Ejecutivo
 from gestionCooperativa.models import DatosCoop
 from .forms import *
 from django.contrib.auth import login, authenticate, logout
@@ -511,3 +511,38 @@ def verSolicitudVerificada(request, id):
                 'municipio':municipio,
                 'thisCoop':empresa
             })
+
+
+
+#registrar Ejecutivo
+class RegisterEjecutivo(View):
+    def get(self,request):
+        empresa = DatosCoop.objects.all()
+        form = registerAspirantForm()
+        return render(request, "gestionAsociados/singUpEJ.html",{"form":form,'thisCoop':empresa})
+
+    def post(self, request):
+        form = registerAspirantForm(request.POST)
+        if form.is_valid():
+            nombre = form.__getitem__('nombre').value()
+            apellido = form.__getitem__('apellido').value()
+            email = form.__getitem__('email').value()
+            contra = get_random_string(length=8)
+            print(contra)
+            usuario = Ejecutivo.objects.create_user(email,email,contra)
+            usuario.first_name = nombre
+            usuario.last_name = apellido
+            usuario.save()
+            print(contra)
+            mensaje = 'usuario: '+ email+' Contraseña: '+contra
+            print(mensaje)
+            send_mail(
+                'Cooperativa Credenciales de usuario ejecutivo',
+                mensaje,
+                '',
+                [email],
+                fail_silently=False,
+            )
+            return redirect('/holamundo')
+        else:
+            pass

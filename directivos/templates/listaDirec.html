@@ -1,0 +1,52 @@
+{% extends "gestionAsociados/base.html" %}
+{% load static %}
+{% block title %} Registro de aspirante {% endblock %}
+    
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="fw-bold">Listado de la estructura de la coperativa</h1>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre completo</th>
+                                    <th>Cargo</th>
+                                    <th>Firma</th>
+                                    <th colspan="2">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for p in directivos %}
+                                    <tr>
+                                        <td>{{ p.id }} </td>
+                                        <td>{{ p.nombreRepresentante }} </td>
+                                        <td>{{ p.cargo }} </td>
+                                        {% if p.firma %}
+                                            <td>
+                                                <img src="{{ p.firma.url }}" alt="" class="prod-size" width="200" height="100">
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                                <img src="{% static 'images/product.png' %}" alt="" class="prod-size">
+                                            </td>
+                                        {% endif %}
+                                            <!--<td><a href="edicionCuota/{{c.id}}" class="btn btn-info">Editar</a></td>>-->
+                                            <td><a href="eliminarDirec/{{p.id}}" class="btn btn-danger">Eliminar</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock%}

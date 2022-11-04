@@ -11,6 +11,7 @@ class User(AbstractUser):
         JEFEOPERACIONES = "JEFEOPERACIONES", 'JefeOperaciones'
         CAJERO = "CAJERO", 'Cajero'
         SOCIO = "SOCIO", 'Socio'
+        EJECUTIVO = "EJECUTIVO", 'Ejecutivo'
 
     base_role = Role.ADMIN
 
@@ -66,3 +67,13 @@ class Administrador(User):
 
     def welcome(self):
         return "Solo para administrador"
+
+
+class Ejecutivo(User):
+    base_role = User.Role.EJECUTIVO
+
+    class Meta:
+        proxy = True
+
+    def welcome(self):
+        return "Solo para ejecutivo"
