@@ -113,7 +113,7 @@ class RegisterJefeOperaciones(View):
 #registrar Cajero
 class RegisterCajero(View):
     def get(self,request):
-        empresa = DatosCoop.objects.get(id=1)
+        empresa = DatosCoop.objects.all()
         form = registerAspirantForm()
         return render(request, "gestionAsociados/singUpCJ.html",{"form":form,'thisCoop':empresa})
 
@@ -164,7 +164,7 @@ def login_user(request):
 
 def changePassword(request):
     try:
-        empresa = DatosCoop.objects.get(id=1)
+        empresa = DatosCoop.objects.all()
         aspirante = Aspirante.objects.get(id = request.user.id)
     except:
         pass
@@ -183,7 +183,7 @@ def changePassword(request):
 
 @login_required
 def crearPeticionAdmision(request):
-    empresa = DatosCoop.objects.get(id=1)
+    empresa = DatosCoop.objects.all()
     aspirante = Aspirante.objects.get(username=request.user)
     if request.method=="POST":
         formPeticion = peticionAspiranteForm(request.POST)
@@ -426,7 +426,7 @@ def validarFormularios(formularios):
 
 @login_required
 def listAprobarPeticion(request):
-    empresa = DatosCoop.objects.get(id=1)
+    empresa = DatosCoop.objects.all()
     if request.user.role != 'JEFEOPERACIONES':
         return redirect('/home')
     else:
@@ -474,7 +474,7 @@ def verSolicitudVerificada(request, id):
             return redirect('/gestionar_peticiones_verificadas')
             
     else:
-        empresa = DatosCoop.objects.get(id=1)
+        empresa = DatosCoop.objects.all()
         solicitud = PeticionAdmision.objects.get(id=id)
         conyuge = Conyuge.objects.get(peticionAdmision = solicitud)
         docIdentidad = DocIdentidad.objects.get(peticionAdmision = solicitud)
