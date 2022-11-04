@@ -10,14 +10,16 @@
         <title>{% block title %}  Cooperativa X  {% endblock %}</title>
     </head>
     <body>
+      {% for stud in thisCoop %}
       <div class="container-fluid text-center" style="height:40vh; background-image: url('../../static/gestionAsociados/img/banner.png'); background-size:cover;">
           <div class="text-center p-2" style="display: flex; margin:auto;">
-            <img src="../../../media/{{thisCoop.logo_img}}" alt="{{thisCoop.nombre_text}}" class="logo-portada" style="display:flex">
+            <img src="../../../media/{{stud.logo_img}}" alt="{{thisCoop.nombre_text}}" class="logo-portada" style="display:flex">
           </div>
           <div class="card-title text-center">
-            <h2 class="titulo-portada">{% for stud in thisCoop %}  {{stud.nombre_text}} {% endfor%}  </h2>
+            <h2 class="titulo-portada">  {{stud.nombre_text}}   </h2>
           </div>
       </div>
+      {% endfor%}
       <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="/home">Inicio</a>
