@@ -40,7 +40,7 @@ def homeEjecutiva(request):
 class Register(View):
     
     def get(self,request):
-        empresa = DatosCoop.objects.get(id=1)
+        empresa = DatosCoop.objects.all()
         form = registerAspirantForm()
         return render(request, "gestionAsociados/singUp.html",{"form":form,'thisCoop':empresa})
 
