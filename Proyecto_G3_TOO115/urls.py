@@ -25,5 +25,7 @@ urlpatterns = [
     path('',include('gestionAsociados.urls')),
     path('',include('gestionCooperativa.urls')),
     path('',include('user.urls')),
+    path('',include('verificarInformacion.urls')),
+
 
 ]

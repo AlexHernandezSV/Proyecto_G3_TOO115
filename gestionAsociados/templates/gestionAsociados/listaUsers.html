@@ -16,7 +16,7 @@
                     <th>Ultimo acceso</th>
                     <th>Rol</th>
                     <th>Activo</th>
-                    <!--<th colspan="1">Opcion</th>-->
+                    <th colspan="1">Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,8 +29,8 @@
                     <td>{{usuario.last_login}}</td>
                     <td>{{usuario.role}}</td>
                     <td>{{usuario.is_active}}</td>
-                    <!--<td><a href="edicionCuota/{{c.id}}" class="btn btn-info">Editar</a></td>>
-                    <td><a href="eliminarCuota/{{c.id}}" class="btn btn-danger">Eliminar</a></td>-->
+                    <!--<td><a href="edicionCuota/{{c.id}}" class="btn btn-info">Editar</a></td>>-->
+                    <td><a href="cambiarEstado/{{usuario.id}}" class="btn btn-danger" style="background-color: seagreen; border-color: seagreen">Activar/Desactivar</a></td>
 
                 </tr>
                 {% endfor %}

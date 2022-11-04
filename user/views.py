@@ -8,7 +8,7 @@ from venv import create
 from django import dispatch
 import django
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -55,3 +55,13 @@ def lista(request):
         'usuarios':usuarios
     }
     return render(request, "gestionAsociados\listaUsers.html", contexto)
+
+
+def userEstado(request, id ):
+    usuario = User.objects.get(id=id)
+    if usuario.is_active == False:
+        usuario.is_active = True
+    else:
+        usuario.is_active = False
+    usuario.save()
+    return redirect("/lista")

@@ -8,5 +8,6 @@ urlpatterns = [
     #user
     #path('list/', lista, name ='user_list'),
     path('lista', views.lista , name="Lista usuarios"),
+    path('cambiarEstado/<int:id>', views.userEstado , name="Lista usuarios"),
 
 ]
