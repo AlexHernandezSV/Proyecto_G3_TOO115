@@ -96,7 +96,6 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql',
 
-        'NAME': 'gestion_asociados',
 
         'USER': 'postgres',
 
@@ -163,7 +162,7 @@ EMAIL_USE_TLS=True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "tecnoinnovag3@gmail.com"
 #EMAIL_HOST_PASSWORD = "asdf"
-EMAIL_HOST_PASSWORD= "jcydkpopbzklosbh"
+EMAIL_HOST_PASSWORD= "bwcyjvqcryfhbxyi"
 
 #Contraseña del correo tecnoinnovag3@gmail.com : too.grupo.03
 
