@@ -1,0 +1,101 @@
+{% extends "gestionAsociados/base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated == False%}
+<div class="container-fluid">
+    <div class="text-center mt-3">
+        <h3 style="color:royalblue;">Asociate y disfruta de nuestros beneficios</h3>
+        <h4>Comienza creando una cuenta de aspirante</h4>
+    </div>
+    <div class="text-center">
+        <img src="../../static/gestionAsociados/img/business_img.jpg" alt="" width="500px"> 
+    </div>
+    <div class="text-center" style="display:flex;background-image:url('../../static/gestionAsociados/img/test.png'); background-size: cover; height: 15vh;">
+        <a href="/register" class="btn btn-dark" style="display: flex;margin:auto;">Crear cuenta nueva</a>
+    </div>
+</div>
+{% endif %}
+{% if user.role == 'CAJERO'%}
+<div class="container-fluid">
+    <div class="text-center mt-3">
+        <h3 style="color:royalblue;">Gestiona los recibos de ingreso de los aspirantes</h3>
+        <h4>Accede al panel de recibos</h4>
+    </div>
+    <div class="text-center">
+        <img src="../../static/gestionAsociados/img/box_img.png" alt="" width="500px"> 
+    </div>
+    <div class="text-center" style="display:flex;background-image:url('../../static/gestionAsociados/img/test.png'); background-size: cover; height: 15vh;">
+        <a href="/gestionar_recibos" class="btn btn-dark" style="display: flex;margin:auto;">Gestionar recibos</a>
+    </div>
+</div>
+{% endif %}
+{% if user.role == 'JEFEOPERACIONES'%}
+<div class="container-fluid">
+    <div class="text-center mt-3">
+        <h3 style="color:royalblue;">Bienvenido, has iniciado como Jefe de Operaciones</h3>
+        <h4>Accede al panel de solicitudes</h4>
+    </div>
+    <div class="text-center">
+        <img src="../../static/gestionAsociados/img/box_img.png" alt="" width="500px"> 
+    </div>
+    <div class="text-center" style="display:flex;background-image:url('../../static/gestionAsociados/img/test.png'); background-size: cover; height: 15vh;">
+        <a href="/gestionar_peticiones_verificadas" class="btn btn-dark" style="display: flex;margin:auto;">Gestionar Solicitudes</a>
+    </div>
+</div>
+{% endif %}
+
+{% if user.role == 'ASPIRANTE'%}
+<div class="container text-center m-5 mt-5">
+    <h1>¡Bienvenido{{user.first_name}} {{user.last_name}}!</h1>
+    <div class="card">
+        <div class="text-center">
+            <img src="../../static/gestionAsociados/img/projects_img.png" alt="" width="200px"><br>
+            <div class="text-center m-3">
+                <a href="/solicitud_aspirante" class="btn btn-primary">Comenzar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if user.role == 'ADMIN' %}
+<div class="row w-100">
+    <div class="col-md-4">
+        <div class="card m-3">
+            <div class="card-body">
+                <img src="" alt="">
+            </div>
+            <div class="text-center m-4">
+                <a href="/registerJO" class="btn btn-primary">Registrar Jefe de Operaciones</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card m-3">
+            <div class="card-body">
+                <img src="" alt="">
+            </div>
+            <div class="text-center m-4"> 
+                <a href="/registerCJ" class="btn btn-primary">Registrar Cajero</a>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-4">
+            <div class="card m-3">
+                <div class="card-body">
+                    <img src="" alt="">
+                </div>
+                <div class="text-center m-4">
+                    <a href="/admin" class="btn btn-primary">Panel de administracion</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock %}

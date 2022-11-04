@@ -117,3 +117,8 @@ BeneficiarioFormSet = modelformset_factory(
         'beneficio': forms.NumberInput(attrs={'class':'form-control'}),
     }
 )
+
+class ChangePasswordForm(forms.Form):
+    passActual= forms.CharField(label='Contraseña Actual',widget=forms.TextInput(attrs={'class':'form-control'}))
+    nueva= forms.CharField(label='Contraseña nueva',widget=forms.TextInput(attrs={'class':'form-control'}))
+    repetir= forms.CharField(label='Repetir contraseña nueva',widget=forms.TextInput(attrs={'class':'form-control'}))

@@ -7,3 +7,7 @@ gestionAsociados/migrations/*
 user/migrations/*
 gestionCooperativa/migrations/*
 cobros/migrations/*
+gestionAsociados/__pycache__/admin.cpython-310.pyc
+gestionAsociados/__pycache__/admin.cpython-310.pyc
+gestionAsociados/__pycache__/apps.cpython-310.pyc
+*.old

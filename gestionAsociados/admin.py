@@ -1,5 +1,6 @@
 from django.contrib import admin
 from gestionAsociados.models import *
+from django.contrib.auth.models import User
 
 # Register your models here.
 #admin.site.register(PeticionAdmision)
@@ -17,6 +18,9 @@ admin.site.register(DocAnexo)
 admin.site.register(Asociacion)
 admin.site.register(TipoDocIdentidad)
 admin.site.register(Municipio)
+admin.site.register(ReciboIngreso)
+admin.site.register(User)
+admin.site.register(Cuenta)
 
 class DocIdentidadAdmin(admin.StackedInline):
     model=DocIdentidad

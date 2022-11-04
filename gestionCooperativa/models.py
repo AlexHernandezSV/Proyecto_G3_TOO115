@@ -8,7 +8,7 @@ def filepath(request, filename):
     old_filename = filename
     timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
     filename = "%s%s" % (timeNow, old_filename)
-    return os.path.join('uploads/', filename)
+    return os.path.join('pictures/', filename)
 
 class DatosCoop(models.Model):
     nombre_text = models.CharField(max_length=200)

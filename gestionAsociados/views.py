@@ -1,16 +1,15 @@
-from cmath import inf
-from email import message, message_from_file
 from pyexpat.errors import messages
-from queue import Empty
-from sys import prefix
+from email import message, message_from_file
+from re import L
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.utils.crypto import get_random_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-
+from datetime import date,datetime
 from user.models import Aspirante, Cajero, JefeOperaciones
+from gestionCooperativa.models import DatosCoop
 from .forms import *
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -23,8 +22,15 @@ def holamundo(request):
 
 #pagina de inicio
 def home(request):
-    return render(request,'gestionAsociados/home.html')
+    try:
+        empresa = DatosCoop.objects.get(id=1)
+    except:
+        pass
+    return render(request,'gestionAsociados/index.html',{'thisCoop':empresa})
 
+def cerrarSesion(request):
+    logout(request)
+    return redirect('/home')
 
 def homeEjecutiva(request):
     return render(request,'gestionAsociados/homeEjecutiva.html')
@@ -33,35 +39,43 @@ def homeEjecutiva(request):
     return render(request, 'gestionAsociados/singUp.html')"""
 
 class Register(View):
+    
     def get(self,request):
+        empresa = DatosCoop.objects.get(id=1)
         form = registerAspirantForm()
-        return render(request, "gestionAsociados/singUp.html",{"form":form})
+        return render(request, "gestionAsociados/singUp.html",{"form":form,'thisCoop':empresa})
 
     def post(self, request):
         form = registerAspirantForm(request.POST)
+        print(form.is_valid())
         if form.is_valid():
             nombre = form.__getitem__('nombre').value()
             apellido = form.__getitem__('apellido').value()
             email = form.__getitem__('email').value()
             contra = get_random_string(length=8)
-            print(contra)
-            usuario = Aspirante.objects.create_user(email,email,contra)
-            usuario.first_name = nombre
-            usuario.last_name = apellido
-            usuario.save()
-            print(contra)
-            mensaje = 'usuario: '+ email+' Contraseña: '+contra
-            print(mensaje)
-            send_mail(
-                'Cooperativa Credenciales de usuario',
-                mensaje,
-                '',
-                [email],
+            try:
+                usuario = Aspirante.objects.create_user(email,email,contra)
+                usuario.first_name = nombre
+                usuario.last_name = apellido
+                
+                print('hola1')
+                usuario.save()
+                mensaje = 'usuario: '+ email+' Contraseña: '+contra
+                send_mail(
+                    'Cooperativa Credenciales de usuario',
+                    mensaje,
+                    '',
+                    [email],
                 fail_silently=False,
             )
+            except Exception as e:
+                error  = e.__str__
+                return render(request, "gestionAsociados/singUp.html",{"form":form,'error':error})
             return redirect('/holamundo')
         else:
-            pass
+            print(form.errors)
+            return render(request, "gestionAsociados/singUp.html",{"form":form})
+
 
 
 
@@ -100,8 +114,9 @@ class RegisterJefeOperaciones(View):
 #registrar Cajero
 class RegisterCajero(View):
     def get(self,request):
+        empresa = DatosCoop.objects.get(id=1)
         form = registerAspirantForm()
-        return render(request, "gestionAsociados/singUpCJ.html",{"form":form})
+        return render(request, "gestionAsociados/singUpCJ.html",{"form":form,'thisCoop':empresa})
 
     def post(self, request):
         form = registerAspirantForm(request.POST)
@@ -137,10 +152,9 @@ def login_user(request):
             user_name=form.cleaned_data.get("username")
             contra=form.cleaned_data.get("password")
             usuario=authenticate(request,username=user_name, password=contra)
-            print(usuario)
             if usuario is not None:
                 login(request,usuario)
-                return redirect('/homeEjecutiva')
+                return redirect('/home')
             else:
                 message.error(request,"Usuario no registrado en el sistema")
         else:
@@ -149,8 +163,28 @@ def login_user(request):
     form=AuthenticationForm()
     return render(request, "gestionAsociados/login.html",{"form":form})
 
+def changePassword(request):
+    try:
+        empresa = DatosCoop.objects.get(id=1)
+        aspirante = Aspirante.objects.get(id = request.user.id)
+    except:
+        pass
+    if(request.method == 'POST'):
+        formChangePassword = ChangePasswordForm(request.POST)
+        if formChangePassword.is_valid():
+            infFormChangePassword = formChangePassword.cleaned_data
+
+            aspirante.set_password(infFormChangePassword['nueva'])
+            
+    else:
+
+        formChangePassword = ChangePasswordForm()
+
+    return render(request,'gestionAsociados/changePassword.html',{"formChangePassword":formChangePassword,'thisCoop':empresa})
+
 @login_required
 def crearPeticionAdmision(request):
+    empresa = DatosCoop.objects.get(id=1)
     aspirante = Aspirante.objects.get(username=request.user)
     if request.method=="POST":
         formPeticion = peticionAspiranteForm(request.POST)
@@ -375,8 +409,12 @@ def crearPeticionAdmision(request):
             "formVivienda":formVivienda,
             "formDocAnexo":formDocAnexo,
             "formDocAnexo2":formDocAnexo2,
-            "formDocAnexo3":formDocAnexo3
+            "formDocAnexo3":formDocAnexo3,
+            'thisCoop':empresa
         })
+
+def miPerfil(request):
+    return render(request,"gestionAsociados/miPerfil.html")
 
 def validarFormularios(formularios):
     for formulario in formularios:
@@ -386,3 +424,91 @@ def validarFormularios(formularios):
             control = False
             return control
     return control
+
+@login_required
+def listAprobarPeticion(request):
+    empresa = DatosCoop.objects.get(id=1)
+    if request.user.role != 'JEFEOPERACIONES':
+        return redirect('/home')
+    else:
+        peticiones = PeticionAdmision.objects.filter(estado = False,verificada= True)
+        return render(request,'gestionAsociados/listaPeticionesVerificadas.html',{'peticiones':peticiones,'thisCoop':empresa})
+
+def verSolicitudVerificada(request, id):
+    if request.user.role != 'JEFEOPERACIONES':
+        return redirect('/home')
+    if(request.method == 'POST'):
+
+        if('denegar' in request.POST):
+            return redirect('/gestionar_peticiones_verificadas')
+        if('aprobar') in request.POST:
+            peticion = PeticionAdmision.objects.get(id=id)
+            asociado = Aspirante.objects.get(id=peticion.aspirante.id)
+            asociado.role = 'SOCIO'
+            reciboIngreso = ReciboIngreso(
+                monto = 50,
+                descripcion = 'Pago por apertura de cuenta y expediente de asociado',
+                tipo = 'Ingreso',
+                aspirante = asociado,
+                cancelado = False,
+            )
+            relleno = str(asociado.id)
+            if(len(relleno)<5):
+                relleno = relleno.zfill(5)
+            codigoAsociado = peticion.apellido1[0].upper()+peticion.apellido2[0].upper()+ date.today().strftime("%y") +relleno
+            print(codigoAsociado)
+
+            cuenta = Cuenta(
+                codigo = codigoAsociado,
+                tipo = 'ahorro',
+                saldo = 0,
+                aspirante = asociado,
+            )
+            peticion.estado = True
+            peticion.aprobada = True
+            peticion.save()
+            cuenta.save()
+            reciboIngreso.save()
+            asociado.save()
+
+            
+            return redirect('/gestionar_peticiones_verificadas')
+            
+    else:
+        empresa = DatosCoop.objects.get(id=1)
+        solicitud = PeticionAdmision.objects.get(id=id)
+        conyuge = Conyuge.objects.get(peticionAdmision = solicitud)
+        docIdentidad = DocIdentidad.objects.get(peticionAdmision = solicitud)
+        vivienda = Vivienda.objects.get(peticionAdmision = id)
+        negocio = ''
+        trabajo = ''
+        try:
+            trabajo = Trabajo.objects.get(peticionAdmision= id)
+            negocio = Negocio.objects.get(peticionAdmision= id)
+        except:
+            pass
+        familiares = Familiar.objects.filter(peticionAdmision= id)
+        referenciasPersonales = ReferenciaPersonal.objects.filter(peticionAdmision= id)
+        beneficiarios = Beneficiario.objects.filter(peticionAdmision= id)
+        docsAnexos = DocAnexo.objects.filter(peticionAdmision= id)
+        departamento = Departamento.objects.all()
+        municipio = Municipio.objects.all()
+
+        return render(
+            request,
+            'gestionAsociados/verSolicitudVerificada.html',
+            {
+                'solicitud':solicitud,
+                'con':conyuge,
+                'docIdentidad':docIdentidad,
+                'vivienda':vivienda,
+                'trab':trabajo,
+                'neg':negocio,
+                'familiar':familiares,
+                'referenciaPersonal':referenciasPersonales,
+                'beneficiario':beneficiarios,
+                'docAnexo':docsAnexos,
+                'departamento':departamento,
+                'municipio':municipio,
+                'thisCoop':empresa
+            })

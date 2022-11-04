@@ -3,14 +3,39 @@
 {% block title %} Registro de aspirante {% endblock %}
 
 {% block content %}
-<div>
+<div class="text-center">
     <h3>Registro de Aspirantes</h3>
 </div>
-    <div>
-        <form method="POST">
-            {% csrf_token %}
-            {{form}}
-            <button>Registrar</button>
-        </form>
+    <div style="display: flex; justify-content: center;">
+        <div class="card m-2 p-2 w-50" style="display: flex; margin: auto;">
+            {% if error %}
+                <p style="color:red;">{{error}}</p>
+            {% endif %}
+            {% if form.errors %}
+                <p style="color:red;">{{form.errors}}</p>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{form.nombre.label_tag}}
+                    {{form.nombre}}
+                </div>
+                <div class="mb-3">
+                    {{form.apellido.label_tag}}
+                    {{form.apellido}}
+                </div>
+                <div class="mb-3">
+                    {{form.email.label_tag}}
+                    {{form.email}}
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary">Registrar</button>
+                </div>
+            </form>
+        </div>
     </div>
+    <script>
+        $('label').addClass('form-label');
+        $('input').addClass('form-control');
+    </script>
 {% endblock%}

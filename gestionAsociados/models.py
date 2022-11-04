@@ -150,8 +150,9 @@ class ReciboIngreso(models.Model):
     descripcion = models.CharField(max_length=100)
     tipo = models.CharField(max_length=30)
     aspirante = models.OneToOneField(Aspirante,on_delete=models.CASCADE)
+    cancelado = models.BooleanField()
 class Cuenta(models.Model):
-    codigo=models.CharField(max_length=8)
+    codigo=models.CharField(max_length=12)
     tipo=models.CharField(max_length=10)
     saldo=models.DecimalField(max_digits=10, decimal_places = 2)
     aspirante = models.ForeignKey(Aspirante,on_delete=models.CASCADE)

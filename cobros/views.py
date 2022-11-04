@@ -1,9 +1,10 @@
 from datetime import date, datetime
 from django.shortcuts import redirect, render
 from psycopg2 import Date
-
-from cobros.forms import registerCuotaForm
+from django.contrib.auth.decorators import login_required
+from cobros.forms import registerCuotaForm,ReciboIngresoFormSet
 from .models import Cuota
+from gestionAsociados.models import ReciboIngreso
 
 # Create your views here.
 def tableCuotas(request):
@@ -42,3 +43,35 @@ def EliminarCuotas(request, id):
     cuota = Cuota.objects.get(id=id)
     cuota.delete()
     return redirect("/Cuotas")
+
+
+def listaRecibos(request):
+    if verificarRol('cajero',request.user):
+
+        if request.method == 'POST':
+            filtro = request.POST['filtro']
+            print(filtro)
+            if filtro == 'all':
+                recibosFiltrados = ReciboIngreso.objects.all()
+            else:
+                recibosFiltrados = ReciboIngreso.objects.filter(cancelado=filtro)
+            return render(request,'listaRecibos.html',{"recibos":recibosFiltrados})
+    else:
+        return redirect('/home')
+        
+    recibos = ReciboIngreso.objects.all()
+    #recibosPendientes = recibos.filter(cancelado = False)
+    return render(request,'listaRecibos.html',{"recibos":recibos,})
+
+@login_required
+def cancelarReciboIngreso(request,id):
+    recibo = ReciboIngreso.objects.get(id=id)
+    recibo.cancelado = True
+    recibo.save()
+    return redirect('/gestionar_recibos')
+
+def verificarRol(rolrequerido,user):
+    if rolrequerido == user.role or rolrequerido.upper() == user.role:
+        return True
+    else:
+        return False

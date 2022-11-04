@@ -1,0 +1,48 @@
+{% extends "gestionAsociados/base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <h1>Lista de solicitudes</h1>
+        <h6>Jefe de Operaciones</h6>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card m-2 p-2">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Aspirante</th>
+                            <th>Departamento</th>
+                            <th>Municipio</th>
+                            <th>Aprobado</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for peticion in peticiones %}
+                        <tr>
+                            <td>{{peticion.id}}</td>
+                            <td>{{peticion.aspirante.first_name}} {{peticion.aspirante.last_name}}</td>
+                            <td>{{peticion.departamento}}</td>
+                            <td>{{peticion.municipio}}</td>
+                            <td>{{peticion.aprobado}}</td>
+                            <td>
+                                <a href="/ver_solicitud_verificada/{{peticion.id}}" class="btn btn-secondary">Ver</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
