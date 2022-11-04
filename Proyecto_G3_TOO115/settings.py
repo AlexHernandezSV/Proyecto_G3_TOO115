@@ -96,6 +96,7 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql',
 
+        'NAME': 'gestion_asociados',
 
         'USER': 'postgres',
 
