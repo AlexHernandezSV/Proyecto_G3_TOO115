@@ -22,10 +22,9 @@ def holamundo(request):
 
 #pagina de inicio
 def home(request):
-    try:
-        empresa = DatosCoop.objects.get(id=1)
-    except:
-        pass
+    
+    empresa = DatosCoop.objects.all()
+    
     return render(request,'gestionAsociados/index.html',{'thisCoop':empresa})
 
 def cerrarSesion(request):
