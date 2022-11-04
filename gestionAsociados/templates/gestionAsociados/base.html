@@ -15,7 +15,7 @@
             <img src="../../../media/{{thisCoop.logo_img}}" alt="{{thisCoop.nombre_text}}" class="logo-portada" style="display:flex">
           </div>
           <div class="card-title text-center">
-            <h2 class="titulo-portada">{{thisCoop.nombre_text}}</h2>
+            <h2 class="titulo-portada">{% for stud in thisCoop %}  {{stud.nombre_text}} {% endfor%}  </h2>
           </div>
       </div>
       <nav class="navbar navbar-expand-lg bg-light">
