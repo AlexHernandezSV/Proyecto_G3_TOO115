@@ -6,13 +6,15 @@ from django.views.generic import View
 from django.utils.crypto import get_random_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from datetime import date,datetime
-from user.models import Aspirante, Cajero, JefeOperaciones, Ejecutivo
+from user.models import Aspirante, Cajero, JefeOperaciones
 from gestionCooperativa.models import DatosCoop
 from .forms import *
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib import messages
+from gestionAsociados.models import PeticionAdmision
+from user.models import User
 
 from django.contrib.auth.decorators import login_required
 
@@ -22,10 +24,34 @@ def holamundo(request):
 
 #pagina de inicio
 def home(request):
-    
+    user = User.objects.all()
     empresa = DatosCoop.objects.all()
+    peticionAdmision= PeticionAdmision.objects.all()
+
+    currentUserName = request.user.get_username()
+    print(currentUserName)
+
+    currentUserId = request.user.id
+    print(currentUserId)
+    existe = False
+
+    if peticionAdmision.filter(id=currentUserId).exists():
+        existe = True
+        
     
-    return render(request,'gestionAsociados/index.html',{'thisCoop':empresa})
+    print(existe)
+
+    
+
+
+    
+    return render(request,'gestionAsociados/index.html',
+    {
+        'thisCoop':empresa,
+        "peticionAdmision":peticionAdmision,
+        #existencia
+        "existe":existe
+    })
 
 def cerrarSesion(request):
     logout(request)
@@ -511,38 +537,3 @@ def verSolicitudVerificada(request, id):
                 'municipio':municipio,
                 'thisCoop':empresa
             })
-
-
-
-#registrar Ejecutivo
-class RegisterEjecutivo(View):
-    def get(self,request):
-        empresa = DatosCoop.objects.all()
-        form = registerAspirantForm()
-        return render(request, "gestionAsociados/singUpEJ.html",{"form":form,'thisCoop':empresa})
-
-    def post(self, request):
-        form = registerAspirantForm(request.POST)
-        if form.is_valid():
-            nombre = form.__getitem__('nombre').value()
-            apellido = form.__getitem__('apellido').value()
-            email = form.__getitem__('email').value()
-            contra = get_random_string(length=8)
-            print(contra)
-            usuario = Ejecutivo.objects.create_user(email,email,contra)
-            usuario.first_name = nombre
-            usuario.last_name = apellido
-            usuario.save()
-            print(contra)
-            mensaje = 'usuario: '+ email+' Contraseña: '+contra
-            print(mensaje)
-            send_mail(
-                'Cooperativa Credenciales de usuario ejecutivo',
-                mensaje,
-                '',
-                [email],
-                fail_silently=False,
-            )
-            return redirect('/holamundo')
-        else:
-            pass
