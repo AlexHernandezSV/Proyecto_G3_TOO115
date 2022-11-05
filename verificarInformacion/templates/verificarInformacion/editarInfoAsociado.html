@@ -1,0 +1,530 @@
+{% extends "gestionAsociados/base.html" %}
+
+
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <main>
+    <div class="container py-4">
+    
+      <div class="p-5 mb-4 bg-light rounded-3">
+        {% if user.role == 'ADMIN' %}
+        <h1 >Verificar Informacion de Aspirantes a asociados></h1>
+        {% endif %}
+        {% if user.role == 'ASPIRANTE' %}
+        <h1 >Editar informacion guardada</h1>
+        {% endif %}
+        <div class="container-fluid py-5">
+          
+          <h1 >Aspirante a asociado <span class="badge bg-secondary">ID: {{ var }}</span></h1>
+          
+              <div class="card mt-3 p-4" id="datos-personales">
+                <div class="card-title"><h2>Datos Personales </h2>
+                  <br>
+                {% for pet in peticionAdmision %}
+                {% if pet.id == var|add:"0" %}
+                <div class="container">
+                  <div class="row">
+                    <div class="col">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Primer nombre:</h6></span>
+                      <input type="text" value="{{pet.nombre1}}"class="form-control" name="nombre1" required>
+                        <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Segundo nombre:</h6></span>
+                        <input type="text" value="{{pet.nombre2}}"class="form-control" name="nombre2" required>
+                        <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Tercer nombre:</h6></span>
+                       <input type="text" value="{{pet.nombre3}}"class="form-control" name="nombre3" required>
+                       <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Primer apellido:</h6></span>
+                       <input type="text" value="{{pet.apellido1}}"class="form-control" name="apellido1" required>
+                        <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Segundo apellido:</h6></span>
+                        <input type="text" value="{{pet.apellido2}}"class="form-control" name="apellido2" required>
+                        <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Tipo de documento:</h6></span>
+                       <select class="form-control"  id="formaDep" name="tipoDoc_id">
+                        <!-- Empezar for de tabla docidentidad -->
+                        
+                       {% for docId in docIdentidad %}
+                       
+                       <!-- Validar id de aspirante iniciar con id de peticionAdmision -->
+                       {% if docId.peticionAdmision_id == var|add:"0" %}
+                       <option value="{{ docId.tipoDoc_id}}">{{ docId.tipoDoc_id }}</option>
+                       <!-- <label><b>{{docId.tipoDoc_id}}</b></label> -->
+                        <!-- Empezar for de tabla tipoDocIdentidad   -->
+                        
+                       {% for doc in tipoDocIdentidad %}
+                       <option value="{{ doc.id }}"> {{ doc.nombreDocumento}}</option>
+                        <!-- Salida de id de documento correspondiente en IF -->
+                       {% if doc.id == docId.tipoDoc_id|add:"0" %}
+                       <label><b>{{doc.nombreDocumento}}</b></label>
+                       {% endif %}
+                       {% endfor %}
+                       {% endif %}
+                       {% endfor %}
+                      </select>
+                       <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Numero de Documento:</h6></span>
+                         <!-- Empezar for de tabla docidentidad -->
+                         {% for docId in docIdentidad %}
+                         <!-- Validar id de aspirante iniciar con id de peticionAdmision -->
+                         {% if docId.peticionAdmision_id == var|add:"0" %}
+                         
+                         <input type="text" value="{{docId.numero}}"class="form-control" name="numeroDoc" required>
+                        
+                        {% endif %}
+                        {% endfor %}
+                        <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Fecha de Nacimiento:</h6></span>
+                        <input type="text" value="{{pet.fechaNac}}"class="form-control" name="fechaNac" required>
+                        
+                       </div>
+                    <div class="col">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Lugar de Nacimiento</h6></span>
+                      <input type="text" value="{{pet.lugarNac}}"class="form-control" name="lugarNac" required>
+                       
+                       <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Direccion:</h6></span>
+                       <input type="text" value="{{pet.direccion}}"class="form-control" name="direccion" required>
+                        <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Email:</h6></span>
+                        <input type="text" value="{{pet.email}}"class="form-control" name="email" required>
+                        <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Departamento</h6></span>
+                       <select class="form-control"  id="formaDep" name="departamentoId">
+                         <!-- Empezar for de tabla departamentos -->
+                         <option value="{{ pet.departamento_id }}"> {{ pet.departamento_id }}</option>
+                         {% for depto in departamento %}
+                         <option value="{{ depto.id}}"> {{ depto.nombre }}</option>
+                          <!-- Salida de id de depto correspondiente en IF -->
+                         {% if depto.id == pet.departamento_id|add:"0" %}
+                         <label><b>{{depto.nombre}}</b></label>
+                         
+                         {% endif %}
+                         {% endfor %}
+                        </select>
+                         <br><br>
+                         <span class="badge rounded-pill bg-light text-dark"><h6>Municipio:</h6></span>
+                         <select class="form-control"  id="formaDep" name="municipioId">
+                          <option value="{{ pet.municipio_id }}"> {{ pet.municipio_id }}</option>
+                       {% for muni in municipio %}
+                       <option value="{{ muni.id}}"> {{ muni.nombre }}</option>
+                       {% if muni.id == pet.municipio_id|add:"0" %}
+                       <label><b>{{muni.nombre}}</b></label>
+                       {% endif %}
+                       {% endfor %}
+                      </select>
+                      <br><br>
+                        <span class="badge rounded-pill bg-light text-dark"><h6>Pais:</h6></span>
+                        <select class="form-control"  id="formaDep" name="paisId">
+                        <!-- Empezar for de tabla pais -->
+                        <option value="{{ pet.pais_id }}"> {{ pet.pais_id }}</option>
+                        {% for pais in pais %}
+                        <option value="{{ pais.id}}"> {{ pais.nombre }}</option>
+                        <!-- Salida de id de depto correspondiente en IF -->
+                        {% if pais.id == pet.pais_id|add:"0" %}
+                       <label><b>{{pais.nombre}}</b></label>
+                       
+                       {% endif %}
+                       {% endfor %}
+                      </select>
+                        <br><br>
+                       <span class="badge rounded-pill bg-light text-dark"><h6>Nº de Personas que dependen de mí</h6></span>
+                       <input type="text" value="{{pet.personasDependientes}}"class="form-control" name="personasDependientes" required>
+                       
+                    </div>
+                  </div>
+                </div>
+                
+                {% endif %}
+                {% endfor %}
+                    </div>
+                      
+                    </div>
+                    
+                  </div>
+                
+            <div class="card mt-3 p-4" id="datos-personales">
+              {% for viv in vivienda %}
+              {% if viv.peticionAdmision_id == var|add:"0" %}
+              <div class="card-title"><h2>Datos de Vivienda </h2>
+              <br>
+              <div class="row">
+                <div class="col">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Propietario:</h6></span>
+                  <input type="text" value="{{viv.propietario}}"class="form-control" name="propietario" required>
+                  
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Parentesco:</h6></span>
+                    <input type="text" value="{{viv.parentesco}}"class="form-control" name="parentesco" required>
+                    
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Tenencia de vivienda:</h6></span>
+                    <input type="text" value="{{viv.tenenciaVivienda}}"class="form-control" name="tenenciaVivienda" required>
+                   
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Tiempo:</h6></span>
+                    <input type="text" value="{{viv.tiempo}}"class="form-control" name="tiempo" required>
+                  
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Ubicacion de vivienda:</h6></span>
+                    <label><b>{{viv.lat}} </b></label>
+                    <label><b>{{viv.lng}}</b></label>
+                    
+                </div>
+                <div class="col">
+                  
+                    <input type="hidden" id="myLat" name="variable" value="{{ viv.lat }}">
+                    <input type="hidden" id="myLng" name="variable" value="{{ viv.lng }}">
+                    
+                    
+                    <style>
+                      #map {
+                        width: 100%;
+                        height: 400px;
+                        background-color: grey;
+                      }
+                    </style>
+                    <div id="map"></div>
+                    <script>
+                      function initMap() {
+                        var myLat = document.getElementById("myLat").value;
+                        var myLng = document.getElementById("myLng").value;
+                        var lat=parseFloat(myLat)
+                        var lng=parseFloat(myLng)
+
+                        //var test= {lat: myLat, lng: myLng};
+                        var test= {lat: lat, lng: lng};
+                        console.log(myLat)
+                        console.log(myLng)
+                        console.log(lat)
+                        console.log(lng)
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                          zoom: 4,
+                          center: test
+                        });
+                        var marker = new google.maps.Marker({
+                          position: test,
+                          map: map
+                        });
+                      }
+                    </script>
+                    <script async defer
+                    src=
+                         "https://maps.googleapis.com/maps/api/js?key=AIzaSyCFodwYnV50ZvlLs9p57pVLiQJcTGIJSNc&callback=initMap">
+                    </script>
+ 
+
+                </div>
+              {% endif %}
+              {% endfor %}
+              </div>
+              </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title">
+                <div class="row">
+                  <div class="col">
+                    
+                    {% for trab in trabajo %}
+                    {% if trab.peticionAdmision_id == var|add:"0" %}
+                    <h2>Datos del trabajo </h2>
+                    <br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Tipo:</h6></span>
+                    <input type="text" value="{{trab.tipo}}"class="form-control" name="tipo" required>
+                    
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Lugar de Trabajo:</h6></span>
+                    <input type="text" value="{{trab.lugarTrabajo}}"class="form-control" name="lugarTrabajo" required>
+                  
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Direccion de trabajo:</h6></span>
+                    <input type="text" value="{{trab.direccion}}"class="form-control" name="direccionT" required>
+                
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Telefono de trabajo:</h6></span>
+                    <input type="text" value="{{trab.telefono}}"class="form-control" name="telefonoT" required>
+
+                    
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Email de trabajo:</h6></span>
+                    <input type="text" value="{{trab.email}}"class="form-control" name="emailTrabajo" required>
+
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Sueldo:</h6></span>
+                  
+                    <input type="text" value="{{ trab.sueldo|add:"0" }}" class="form-control" name="sueldoTrabajo" required>
+
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Cargo:</h6></span>
+                 
+                    <input type="text" value="{{trab.cargo}}"class="form-control" name="cargoT" required>
+
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Jefe:</h6></span>
+                    <input type="text" value="{{trab.jefe}}"class="form-control" name="jefeT" required>
+
+                
+                    <br><br>
+
+
+                    {% endif %}
+                    {% endfor %}
+
+                  </div>
+
+                  <div class="col">
+                  {% for neg in negocio %}
+                    {% if neg.peticionAdmision_id == var|add:"0" %}
+                    <h2>Datos del Negocio</h2>
+                    <br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Nombre del negocio:</h6></span>
+                    
+                    <input type="text" value="{{neg.nombreNegocio}}"class="form-control" name="NombreNegocio" required>
+
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Direccion del negocio:</h6></span>
+                    <input type="text" value="{{neg.direccion}}"class="form-control" name="direccionNegocio" required>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Telefono del negocio:</h6></span>
+                    <input type="text" value="{{neg.telefono}}"class="form-control" name="telefonoNegocio" required>
+                   
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Email del negocio:</h6></span>
+                    <input type="text" value="{{neg.email}}"class="form-control" name="emailnegocio" required>
+                    
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Numero de Registro:</h6></span>
+                  
+                    <input type="text" value="{{neg.numRegistro}}"class="form-control" name="numRegistro" required>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Giro del negocio:</h6></span>
+                    <input type="text" value="{{neg.giro}}"class="form-control" name="giroNegocio" required>
+                    
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Numero de Trabajadores:</h6></span>
+                    <input type="text" value="{{neg.numTrabajadores}}"class="form-control" name="trabajadoresNegocio" required>
+                    
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Capital:</h6></span>
+                    <input type="text" value="{{neg.capital}}"class="form-control" name="capitalNegocio" required>
+                    
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Mercancia:</h6></span>
+                    <input type="text" value="{{neg.mercancia}}"class="form-control" name="mercanciaNegocio" required>
+            
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Mobiliario o equipos:</h6></span>
+                    <input type="text" value="{{neg.mobiliarioEquipo}}"class="form-control" name="mobiliarioEquipo" required>
+                    
+                    <br><br>
+
+                  {% endif %}
+                  {% endfor %}
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Datos del Conyuge </h2>
+                <br>
+                {% for con in conyuge %}
+                {% if con.peticionAdmision_id == var|add:"0" %}
+                    <div class="col">
+                      <span class="badge rounded-pill bg-light text-dark"><h6>Nombre del conyuge:</h6></span>
+                      <input type="text" value="{{con.nombre}}"class="form-control" name="nombreC" required>
+                    
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Apellido del conyuge:</h6></span>
+                    <input type="text" value="{{con.apellido}}"class="form-control" name="apellidoC" required>
+             
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Documento de identidad:</h6></span>
+                    <input type="text" value="{{con.docIdentidad}}"class="form-control" name="docC" required>
+                    <br><br>
+                    <span class="badge rounded-pill bg-light text-dark"><h6>Telefono del conyuge:</h6></span>
+                    <input type="text" value="{{con.telefono}}"class="form-control" name="telefonoC" required>
+                    <br><br>
+                    </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Familiares </h2>
+                <br>
+                {% for fam in familiar %}
+                {% if fam.peticionAdmision_id == var|add:"0" %}
+                <span class="badge bg-success"><h6>Familiar {{ forloop.counter }}</h6></span>
+                
+                <br><br>
+                <div class="col">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Parentesco familiar:</h6></span>
+                  <input type="text" value="{{fam.parentesco}}"class="form-control" name="parentescoF" required>
+                  
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de familiar:</h6></span>
+                  <input type="text" value="{{fam.nombre}}"class="form-control" name="nombreF" required>
+               
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Apellido de familiar:</h6></span>
+                  <input type="text" value="{{fam.apellido}}"class="form-control" name="apellidoF" required>
+                
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Telefono de familiar:</h6></span>
+                  <input type="text" value="{{fam.telefono}}"class="form-control" name="telefonoF" required>
+                  
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Email de familiar:</h6></span>
+                  <input type="text" value="{{fam.email}}"class="form-control" name="emailF" required>
+                 
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Departamento de familiar</h6></span>
+                  <select class="form-control"  id="formaDep" name="DepartamentoF">
+                         <!-- Empezar for de tabla departamentos -->
+                         <option value="{{fam.departamento_id|add:"0"}}">{{ fam.departamento_id }}</option>
+                         {% for depto in departamento %}
+                         <option value="{{depto.id|add:"0"}}"> {{ depto.nombre }}</option>
+                          <!-- Salida de id de depto correspondiente en IF -->
+                         {% if depto.id == fam.departamento_id|add:"0" %}
+                         <label><b>{{depto.nombre}}</b></label>
+                         
+                         {% endif %}
+                         {% endfor %}
+                  </select>
+                         <br><br>
+                         <span class="badge rounded-pill bg-light text-dark"><h6>Municipio de familiar:</h6></span>
+                         <select class="form-control"  id="formaDep" name="municipioF">
+                          <option value="{{ fam.municipio_id }}">{{ fam.municipio_id }}</option>
+                       {% for muni in municipio %}
+                       <option value="{{ muni.id}}"> {{ muni.nombre }}</option>
+                       {% if muni.id == fam.municipio_id|add:"0" %}
+                       <label><b>{{muni.nombre}}</b></label>
+                       {% endif %}
+                       {% endfor %}
+                      </select>
+                      
+                </div>
+                <br>
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Referencias Personales </h2>
+                <br>
+                {% for ref in referenciaPersonal %}
+                {% if ref.peticionAdmision_id == var|add:"0" %}
+                <span class="badge bg-warning text-dark"><h6>Referencia {{ forloop.counter }}</h6></span>
+                
+                <br><br>
+                <div class="col">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de referencia:</h6></span>
+                  <input type="text" value="{{ref.nombre}}"class="form-control" name="nombreR" required>
+                  
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Apellido de referencia:</h6></span>
+                  <input type="text" value="{{ref.apellido}}"class="form-control" name="apellidoR" required>
+                 
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Telefono de referencia:</h6></span>
+                  <input type="text" value="{{ref.telefono}}"class="form-control" name="telefonoR" required>
+            
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Email de referencia:</h6></span>
+                  <input type="text" value="{{ref.email}}"class="form-control" name="emailR" required>
+                 
+                  <br><br>
+                  
+                </div>
+                <br>
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Beneficiarios </h2>
+                <br>
+                {% for ben in beneficiario %}
+                {% if ben.peticionAdmision_id == var|add:"0" %}
+                <span class="badge bg-primary"><h6>Beneficiario {{ forloop.counter }}</h6></span>
+                <br><br>
+                <div class="col">
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Parentesco de beneficiario:</h6></span>
+                  <input type="text" value="{{ben.parentesco}}"class="form-control" name="parentescoB" required>
+        
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de beneficiario:</h6></span>
+                  <input type="text" value="{{ben.nombre}}"class="form-control" name="nombreB" required>
+        
+                 
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Apellido de benificiario:</h6></span>
+                  <input type="text" value="{{ben.apellido}}"class="form-control" name="apellidoB" required>
+ 
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Beneficio</h6></span>
+                  <input type="text" value="{{ben.beneficio}}"class="form-control" name="beneficioB" required>
+        
+                  
+                  <br><br>
+                  
+                </div>
+                
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+            <div class="card mt-3 p-4" id="datos-personales">
+              <div class="card-title"><h2>Documentos Subidos </h2>
+                <br>
+                {% for doc in docAnexo %}
+                {% if doc.peticionAdmision_id == var|add:"0" %}
+                <div class="col">
+                  <span class="badge bg-info text-dark"><h6>Documento {{ forloop.counter }}</h6></span>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Nombre de documento: </h6></span>
+                  <label><b>{{doc.nombre}}</b></label>
+                  <br><br>
+                  <span class="badge rounded-pill bg-light text-dark"><h6>Descarga de documento: </h6></span>
+                  <a href="{{ doc.doc.url }}" download>{{doc.doc}}</a>
+                  <br><br>
+                </div>
+                {% endif %}
+                {% endfor %}
+                
+              </div>
+            </div>
+          
+          <br><br>
+          
+            
+            
+            <button method="POST" class="btn btn-success btn-lg" type="submit" name="aprobar" value="True" >Subir</button>
+           
+            <button class="btn btn-primary btn-lg" type="button" onclick="window.location='/home';">Salir</button>
+          </form>
+          
+          
+
+        </div>
+        <footer >
+          &copy; 2022
+        </footer>
+      </div>
+    </div>
+    
+
+    </div>
+    </main>
+  
+
+{% endblock %}
