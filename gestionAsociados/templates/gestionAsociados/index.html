@@ -47,18 +47,40 @@
 </div>
 {% endif %}
 
+
+
 {% if user.role == 'ASPIRANTE'%}
 <div class="container text-center m-5 mt-5">
-    <h1>¡Bienvenido{{user.first_name}} {{user.last_name}}!</h1>
-    <div class="card">
+    <h1>¡Bienvenido {{user.first_name}} {{user.last_name}}!</h1>
+    
+
+    {% if existe == False %}
+    <h5>Da click en Comenzar para empezar el proceso de registro</h5>
+       <div class="card">
         <div class="text-center">
             <img src="../../static/gestionAsociados/img/projects_img.png" alt="" width="200px"><br>
             <div class="text-center m-3">
                 <a href="/solicitud_aspirante" class="btn btn-primary">Comenzar</a>
             </div>
         </div>
-    </div>
+       </div>
+    {% endif %}
+    {% if existe == True %}
+    <h5>La solicitud ya ha sido llenada</h5>
+       <div class="card">
+        <div class="text-center">
+            <img src="https://camo.githubusercontent.com/a1d658fb632e3f03d1e1ab08b9c28347fa875665dfb8ffd74f81c24e0ea6d9ce/68747470733a2f2f63646e332e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f666c61742d6f66666963652d69636f6e732d312f3134302f417274626f6172645f312d342d3531322e706e67" alt="" width="200px"><br>
+            <div class="text-center m-3">
+                
+                <a href="/verInfoAsociado/{{ user.id }}" class="btn btn-primary">Ver Datos</a>
+            </div>
+        </div>
+       </div>
+
+
+    {% endif %}
 </div>
+
 {% endif %}
 {% if user.role == 'SOCIO'%}
 <div class="p-5 mb-4 bg-light rounded-3">
@@ -76,6 +98,12 @@
     </div>
   </div>
 {% endif %}
+
+
+
+
+
+
 {% if user.role == 'ADMIN' %}
 <div class="row w-100">
     <div class="col-md-4">

@@ -6,7 +6,7 @@ from django.views.generic import View
 from django.utils.crypto import get_random_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from datetime import date,datetime
-from user.models import Aspirante, Cajero, JefeOperaciones, Ejecutivo
+from user.models import Aspirante, Cajero, Ejecutivo, JefeOperaciones
 from gestionCooperativa.models import DatosCoop
 from cobros.models import Cuota
 from .forms import *
@@ -14,6 +14,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib import messages
+from gestionAsociados.models import PeticionAdmision
+from user.models import User
 
 from django.contrib.auth.decorators import login_required
 
@@ -23,10 +25,34 @@ def holamundo(request):
 
 #pagina de inicio
 def home(request):
-    
+    user = User.objects.all()
     empresa = DatosCoop.objects.all()
+    peticionAdmision= PeticionAdmision.objects.all()
+
+    currentUserName = request.user.get_username()
+    print(currentUserName)
+
+    currentUserId = request.user.id
+    print(currentUserId)
+    existe = False
+
+    if peticionAdmision.filter(id=currentUserId).exists():
+        existe = True
+        
     
-    return render(request,'gestionAsociados/index.html',{'thisCoop':empresa})
+    print(existe)
+
+    
+
+
+    
+    return render(request,'gestionAsociados/index.html',
+    {
+        'thisCoop':empresa,
+        "peticionAdmision":peticionAdmision,
+        #existencia
+        "existe":existe
+    })
 
 def cerrarSesion(request):
     logout(request)
