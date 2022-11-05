@@ -22,6 +22,17 @@
     text-shadow: 2px 2px black
 }
 
-body{
-    background-color: blue;
+.box-carnet{
+    background-image: url('../img/bottom.png');
+    background-size: cover;
+    border: 1px solid lightgrey;
+    width: 350px;
+    height: 200px;
+    border-radius: 10px;
+}
+.foto-carnet{
+    display: flex;
+    margin:auto;
+    vertical-align: middle;
+    margin-top: 30%;
 }

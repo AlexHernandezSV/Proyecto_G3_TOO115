@@ -159,6 +159,7 @@ class Cuenta(models.Model):
 
 class Expediente():
     pass
-class Foto():
-    foto = models.ImageField()
+
+class Foto(models.Model):
+    foto = models.FileField(upload_to='documentos',blank=True,null=True)
     aspirante= models.OneToOneField(Aspirante,on_delete=models.CASCADE)

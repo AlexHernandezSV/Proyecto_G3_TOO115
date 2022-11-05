@@ -5,6 +5,7 @@ from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from two_factor import views as tf_views
 
 
 urlpatterns = [
@@ -24,13 +25,13 @@ urlpatterns = [
     #path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/password_change',auth_views.PasswordChangeView.as_view(template_name='gestionAsociados/changePassword.html',success_url='/home')),
     #path('account/login', auth_views.LoginView.as_view(template_name='gestionAsociados/changePassword.html')),
-    #path('account/login', auth_views.LoginView.as_view(template_name='gestionAsociados/changePassword.html')),
+    #path('accounts/login', auth_views.LoginView.as_view(template_name='gestionAsociados/changePassword.html')),
     path('mi_perfil',miPerfil),
     path('gestionar_peticiones_verificadas',listAprobarPeticion),
     path('ver_solicitud_verificada/<int:id>',verSolicitudVerificada),
     path('',include('verificarInformacion.urls')),
     path('registerEJ', views.RegisterEjecutivo.as_view()),
-
+    path('carnet',verCarnet),
 ]
 
 if(settings.DEBUG):

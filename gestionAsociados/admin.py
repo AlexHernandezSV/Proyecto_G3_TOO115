@@ -21,6 +21,7 @@ admin.site.register(Municipio)
 admin.site.register(ReciboIngreso)
 admin.site.register(User)
 admin.site.register(Cuenta)
+admin.site.register(Foto)
 
 class DocIdentidadAdmin(admin.StackedInline):
     model=DocIdentidad

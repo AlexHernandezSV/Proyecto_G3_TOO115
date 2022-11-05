@@ -1,0 +1,60 @@
+{% extends "gestionAsociados/base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div class="col" style="display: flex;">
+            <div  id="carnet" class="box-carnet" style="display: flex;flex-direction: column; margin: auto;">
+                <h5 class="text-center">{{empresa.nombre_text}}</h1>
+                <div class="row w-100 h-100">
+                    <div class="col-4" style="display: flex;">
+                        <img src="../../../media/{{foto.foto}}" alt="" width="80px" height="90px" class="foto-carnet">
+                    </div>
+                    <div class="col-8" style="display: flex;" class="foto-carnet">
+                        <div class="row">
+                            <div class="col-12"></div>
+                            <div class="col-12">
+                                <div class="card-tiltle">
+                                    <div class="card-title"><strong>Carné: {{cuenta.codigo}}</strong></div>
+                                    <strong>Nombres: {{peticion.nombre1}} {{peticion.nombre2}} {{peticion.nombre3}}</strong><br>
+                                    <strong>Apellidos: {{peticion.apellido1}} {{peticion.apellido2}}</strong>
+                                </div>
+                            </div>
+                            <div class="col-12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" id="btnImprimir">Imprimir</button>
+</div>
+<script>
+    function imprimirElemento(elemento) {
+        console.log(elemento)
+  var ventana = window.open('', 'PRINT', 'height=400,width=600');
+  ventana.document.write('<html><head><title>' + document.title + '</title>');
+  ventana.document.write('<link rel="stylesheet" href="../../static/gestionAsociados/styles/main.css">');
+  ventana.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">'); //Aquí agregué la hoja de estilos
+  ventana.document.write('</head><body >');
+  ventana.document.write(elemento.innerHTML);
+  ventana.document.write('</body></html>');
+  ventana.document.close();
+  ventana.focus();
+  ventana.onload = function() {
+    ventana.print();
+    ventana.close();
+  };
+  return true;
+}
+
+document.querySelector("#btnImprimir").addEventListener("click", function() {
+  var div = document.querySelector("#carnet");
+  imprimirElemento(div);
+});
+</script>
+
+{% endblock %}

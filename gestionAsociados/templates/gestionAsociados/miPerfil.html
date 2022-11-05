@@ -5,11 +5,25 @@
 {% block content %}
     <h1>Mi Perfil</h1>
     <div class="row">
+        {% if user.role == 'SOCIO' %}
+        <div class="col-12">
+            <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+                {{formFoto}}
+            <button class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
+        {% endif %}
         <div class="col">
             <div class="card mt-3 p-3">
-                {{user.first_name}}
-                {{user.last_name}}
-                {{user.email}}
+                <div class="card-title">
+                    <p>Nombre: {{user.first_name}}</p>
+                </div>
+                <div class="card-title">
+                    <p>Apellido:{{user.last_name}}</p>
+                </div>
+                <div class="card-title">
+                    <p>Email: {{user.email}}</p>
+                </div><br>
                 <a href="/accounts/password_change">Cambiar contraseña</a>
             </div>
         </div>

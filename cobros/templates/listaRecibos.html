@@ -5,7 +5,12 @@
 {% block content %}
 <div class="container-fluid">
     <div class="text-center">
+        {% if user.role == 'CAJERO'%}
         <h1>Gestion de recibos</h1>
+        {% endif %}
+        {% if user.role == 'SOCIO'%}
+        <h1>Mis Recibos</h1>
+        {% endif %}
     </div>
     <div class="row mt-3">
         <form action="" method="post">{% csrf_token %}
@@ -39,7 +44,9 @@
                         <th>Descripcion</th>
                         <th>Tipo</th>
                         <th>Cancelado</th>
+                        {% if user.role != 'SOCIO' %}
                         <th>Accion</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -50,8 +57,10 @@
                         <td>{{recibo.monto}}</td>
                         <td>{{recibo.descripcion}}</td>
                         <td>{{recibo.tipo}}</td>
-                        <td>{{recibo.cancelado}}</td>
+                        <td>{%if recibo.cancelado == True%}Cancelado {% else %} Pendiente{% endif %}</td>
+                        {% if user.role != 'SOCIO' %}
                         <td><a href="/cancelar_recibo/{{recibo.id}}" class="btn btn-danger">Cancelar</a></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

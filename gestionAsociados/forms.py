@@ -117,6 +117,18 @@ BeneficiarioFormSet = modelformset_factory(
         'beneficio': forms.NumberInput(attrs={'class':'form-control'}),
     }
 )
+class FotoForm(forms.Form):
+    foto = forms.FileField(label='Foto',max_length=300,required = False)
+
+FotoFormSet = modelformset_factory(
+    Foto,
+    exclude=('aspirante',),
+    extra=0,
+    widgets={
+        'foto':forms.FileInput(attrs={'class':'form-control'}),
+    }
+)
+
 
 class ChangePasswordForm(forms.Form):
     passActual= forms.CharField(label='Contraseña Actual',widget=forms.TextInput(attrs={'class':'form-control'}))

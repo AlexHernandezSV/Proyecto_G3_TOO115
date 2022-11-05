@@ -47,7 +47,7 @@ def EliminarCuotas(request, id):
 
 def listaRecibos(request):
     if verificarRol('cajero',request.user):
-
+        recibos = ReciboIngreso.objects.all()
         if request.method == 'POST':
             filtro = request.POST['filtro']
             print(filtro)
@@ -56,10 +56,10 @@ def listaRecibos(request):
             else:
                 recibosFiltrados = ReciboIngreso.objects.filter(cancelado=filtro)
             return render(request,'listaRecibos.html',{"recibos":recibosFiltrados})
+    elif verificarRol('SOCIO',request.user):
+        recibos = ReciboIngreso.objects.filter(aspirante = request.user)
     else:
         return redirect('/home')
-        
-    recibos = ReciboIngreso.objects.all()
     #recibosPendientes = recibos.filter(cancelado = False)
     return render(request,'listaRecibos.html',{"recibos":recibos,})
 

@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from datetime import date,datetime
 from user.models import Aspirante, Cajero, JefeOperaciones, Ejecutivo
 from gestionCooperativa.models import DatosCoop
+from cobros.models import Cuota
 from .forms import *
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
@@ -413,7 +414,24 @@ def crearPeticionAdmision(request):
         })
 
 def miPerfil(request):
-    return render(request,"gestionAsociados/miPerfil.html")
+    if(request.method == 'POST'):
+        #formFoto = FotoForm(request.POST,request.FILES)
+        formFoto = FotoFormSet(request.POST,request.FILES)
+        if formFoto.is_valid():
+            infFormFoto = formFoto.cleaned_data
+            #print(f.cleaned_data)
+            #print(request.POST)
+            #print(infFormFoto)
+            foto = Foto(
+                foto = infFormFoto["foto"],
+                aspirante = request.user,
+            )
+            foto.save()
+        return redirect('/mi_perfil')
+    else:
+        #formFoto = FotoForm()    
+        formFoto = FotoFormSet()
+        return render(request,"gestionAsociados/miPerfil.html",{'formFoto':formFoto})
 
 def validarFormularios(formularios):
     for formulario in formularios:
@@ -443,9 +461,11 @@ def verSolicitudVerificada(request, id):
         if('aprobar') in request.POST:
             peticion = PeticionAdmision.objects.get(id=id)
             asociado = Aspirante.objects.get(id=peticion.aspirante.id)
+            cuota = Cuota.objects.get(tipo=1)
+
             asociado.role = 'SOCIO'
             reciboIngreso = ReciboIngreso(
-                monto = 50,
+                monto = cuota.monto,
                 descripcion = 'Pago por apertura de cuenta y expediente de asociado',
                 tipo = 'Ingreso',
                 aspirante = asociado,
@@ -470,6 +490,17 @@ def verSolicitudVerificada(request, id):
             reciboIngreso.save()
             asociado.save()
 
+            mensaje = "Estimado(a). \n"+asociado.first_name+' '+asociado.last_name +' \n'
+            mensaje += "Su solicitud ha sido aprobada por la Junta Directiva de la Cooperativa"
+            mensaje += "\nCodigo de socio: " + cuenta.codigo
+            email = asociado.email
+            send_mail(
+                'Resolución de solicitud',
+                mensaje,
+                '',
+                [email],
+                fail_silently=False,
+            )
             
             return redirect('/gestionar_peticiones_verificadas')
             
@@ -511,6 +542,17 @@ def verSolicitudVerificada(request, id):
                 'municipio':municipio,
                 'thisCoop':empresa
             })
+
+def verCarnet(request):
+    if (request.user.role != 'SOCIO'):
+        return redirect('/home')
+    else:
+        cuenta = Cuenta.objects.get(aspirante = request.user.id)
+        peticion = PeticionAdmision.objects.get(aspirante= request.user.id)
+        empresa = DatosCoop.objects.get(id=1)
+        foto = Foto.objects.get(aspirante = request.user)
+
+        return render(request,'gestionAsociados/verCarnet.html',{'cuenta':cuenta,'peticion':peticion,'foto':foto,'empresa':empresa})
 
 
 
